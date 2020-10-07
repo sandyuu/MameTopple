@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MameToppleApi", "MameToppleApi\MameToppleApi.csproj", "{138CC4EC-07F6-4E7A-90F4-B3B59F331714}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{138CC4EC-07F6-4E7A-90F4-B3B59F331714}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{138CC4EC-07F6-4E7A-90F4-B3B59F331714}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{138CC4EC-07F6-4E7A-90F4-B3B59F331714}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{138CC4EC-07F6-4E7A-90F4-B3B59F331714}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AB6D8A34-2906-4F7D-A527-C4E8EA073E93}
+	EndGlobalSection
+EndGlobal
