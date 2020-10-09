@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MameToppleApi.Helpers;
@@ -14,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace MameToppleApi
 {
@@ -31,7 +34,8 @@ namespace MameToppleApi
         {
             services.AddControllers();
             services.AddSingleton<JwtHelpers>();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddSwaggerGen();//註冊Swagger，定義一個或多個Swagger文件。
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) //註冊JWT
             .AddJwtBearer(options =>
             {
                 // 當驗證失敗時，回應標頭會包含 WWW-Authenticate 標頭，這裡會顯示失敗的詳細錯誤原因
@@ -79,6 +83,16 @@ namespace MameToppleApi
             app.UseAuthentication(); //驗證
 
             app.UseAuthorization(); //授權
+
+            app.UseSwagger(); //啟用中介軟體為產生的 JSON 文件和 Swagger UI 提供服務
+
+            // 啟用中介軟體提供swagger-ui (HTML, JS, CSS, etc.),
+            // 指定 Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseEndpoints(endpoints =>
             {

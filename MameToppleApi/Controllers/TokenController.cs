@@ -22,6 +22,12 @@ namespace MameToppleApi.Controllers
             _jwt = jwt;
         }
 
+
+        /// <summary>
+        /// 登入取得Token
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns>回傳Token</returns>
         [AllowAnonymous]
         [HttpPost]
         public ActionResult<string> SignIn(LoginViewModel login)
