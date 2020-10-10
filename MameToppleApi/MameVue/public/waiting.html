@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            background: hsla(67, 95%, 95%, 1);
+        }
+
+        .title {
+            font-family: 'Comic Neue', cursive;
+            font-size: 72px;
+            text-align: center;
+        }
+
+        .one {
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            border: solid 5px hsla(0, 95%, 35%, 1);
+            padding: 1em;
+            line-height: 1.5em;
+        }
+
+        @keyframes example {
+            0% {
+                margin-top: 0px;
+            }
+
+            50% {
+                margin-top: 20px;
+            }
+
+            100% {
+                margin-top: 0px;
+            }
+        }
+
+        @keyframes example1 {
+            0% {
+                margin-top: 20px;
+            }
+
+            50% {
+                margin-top: 0px;
+            }
+
+            100% {
+                margin-top: 20px;
+            }
+        }
+
+        .player:nth-child(1) {
+            display: inline-block;
+            animation-name: example;
+            animation-duration: 2s;
+            animation-iteration-count: infinite;
+        }
+
+        .player:nth-child(2) {
+            display: inline-block;
+            animation-name: example1;
+            animation-duration: 2s;
+            animation-iteration-count: infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="title">
+        Waiting for players....
+    </div>
+    <div class="d-flex" id="app">
+        <div class="col-3 player" v-for="item in Array">
+            <div class='one d-flex align-items-center flex-column'>
+                <div class="Avatar text-center">
+                    <img v-bind:src="item.imageSrc" alt="" class="w-50 bg-white rounded-circle">
+                </div>
+                <div class="info justify-content-start">
+                    <span>name：{{item.name}}</span>
+                    <!-- <span>{{ Object.keys(item)[1] }}：{{item.name}}</span> -->
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-3 player">
+            <div class='one d-flex align-items-center flex-column'>
+                <div class="Avatar text-center">
+                    <img v-bind:src="json.imageSrc" alt="" class="w-50 bg-white rounded-circle">
+                </div>
+                <div class="info">
+                    <label for="">name：</label>
+                    <span>Anny HUANG</span>
+                </div>
+            </div>
+        </div> -->
+    </div>
+    <script>
+        $.fn.exBounce = function () {
+            var self = this;
+            (function runEffect() {
+                self.effect("bounce", {
+                    times: 3
+                }, 300, runEffect);
+            })();
+            return this;
+
+        };
+        $(document).ready(function () {
+            $(".title").exBounce();
+        });
+
+
+        var items=[{
+            imageSrc: "mameimg/Avatar.png",
+            name:"Annyyyy",
+        },{
+            imageSrc: "mameimg/Avatar.png",
+            name:"Annyyyy213123",
+        }]
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                Array: items
+                }
+        })
+    </script>
+</body>
+
+</html>
