@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MameToppleApi.Helpers;
+using MameToppleApi.Models;
 using MameToppleApi.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -34,7 +35,7 @@ namespace MameToppleApi.Controllers
         {
             if (ValidateUser(login))
             {
-                return _jwt.GenerateToken(login.Username);
+                return _jwt.GenerateToken(login.Username, "admin@gmail.com");
             }
             else
             {
@@ -43,6 +44,7 @@ namespace MameToppleApi.Controllers
         }
         private bool ValidateUser(LoginViewModel login)
         {
+
             return true; // TODO 和資料庫比對使用者登入資料
         }
 
@@ -53,7 +55,7 @@ namespace MameToppleApi.Controllers
             return Ok(User.Claims.Select(p => new { p.Type, p.Value }));
         }
 
-        [Authorize] //通過驗證才能存取
+        [Authorize(Roles = "Admin")] //通過驗證才能存取
         [HttpGet]
         public IActionResult GetUserName()
         {

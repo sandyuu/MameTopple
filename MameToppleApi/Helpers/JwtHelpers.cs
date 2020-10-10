@@ -15,7 +15,7 @@ namespace MameToppleApi.Helpers
         {
             configuration = _configuration;
         }
-        public string GenerateToken(string userName, int expireMinutes = 30)
+        public string GenerateToken(string userName, string email, int expireMinutes = 30)
         {
             var issuer = configuration.GetValue<string>("JwtSettings:Issuer");
             var signKey = configuration.GetValue<string>("JwtSettings:SignKey");
@@ -39,7 +39,10 @@ namespace MameToppleApi.Helpers
             //claims.Add(new Claim(ClaimTypes.Name, userName));
 
             // 你可以自行擴充 "roles" 加入登入者該有的角色
-            claims.Add(new Claim("roles", "Admin"));
+            if (email == "admin@gmail.com")
+            {
+                claims.Add(new Claim("roles", "Admin"));
+            }
             claims.Add(new Claim("roles", "Users"));
 
             var userClaimsIdentity = new ClaimsIdentity(claims);
