@@ -6,7 +6,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MameToppleApi.Helpers;
+using MameToppleApi.Interfaces;
 using MameToppleApi.Models;
+using MameToppleApi.Repository;
+using MameToppleApi.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,8 +41,10 @@ namespace MameToppleApi
             services.AddDbContext<ToppleDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToppleDBContext")));
             services.AddSingleton<JwtHelpers>();//註冊JwtHelpers
             services.AddSwaggerGen();//註冊Swagger，定義一個或多個Swagger文件。
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) //註冊JWT
-            .AddJwtBearer(options =>
+            services.AddScoped<IUserService, UserService>(); //註冊UserService
+            services.AddScoped(typeof(IRepository<User, string>), typeof(UserRepository));
+            //註冊JWT  
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 // 當驗證失敗時，回應標頭會包含 WWW-Authenticate 標頭，這裡會顯示失敗的詳細錯誤原因
                 options.IncludeErrorDetails = true; // 預設值為 true，有時會特別關閉

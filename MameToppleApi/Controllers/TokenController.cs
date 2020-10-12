@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using MameToppleApi.Helpers;
 using MameToppleApi.Models;
 using MameToppleApi.Models.ViewModels;
+using MameToppleApi.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,14 @@ namespace MameToppleApi.Controllers
     public class TokenController : ControllerBase
     {
         private readonly JwtHelpers _jwt;
+        private readonly ToppleDBContext _context;
+        private readonly UserService _userService;
 
-        public TokenController(JwtHelpers jwt)
+        public TokenController(JwtHelpers jwt, ToppleDBContext context, UserService userService)
         {
             _jwt = jwt;
+            _context = context;
+            _userService = userService;
         }
 
 
@@ -44,8 +49,11 @@ namespace MameToppleApi.Controllers
         }
         private bool ValidateUser(LoginViewModel login)
         {
-
-            return true; // TODO 和資料庫比對使用者登入資料
+            if (_userService.SignInCheck(login))
+            {
+                return true;
+            }
+            return false; // TODO 和資料庫比對使用者登入資料
         }
 
         [Authorize] //通過驗證才能存取
