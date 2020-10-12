@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 /// <summary>
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 /// </summary>
 namespace MameToppleApi.Repository
 {
-    public interface IRepository<TEntity, TKey> where TEntity : class
+    public interface IRepository<TEntity> : IDisposable
     {
         /// <summary>
         /// 新增
@@ -20,20 +21,19 @@ namespace MameToppleApi.Repository
         /// 取得全部
         /// </summary>
         /// <returns></returns>
-        Task<ICollection<TEntity>> GetAllAsync();
+        Task<IEnumerable<TEntity>> GetAllAsync();
 
         /// <summary>
         /// 取得單筆
         /// </summary>
         /// <param name="expression">查詢條件</param>
         /// <returns></returns>
-        Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> expression);
+        TEntity GetOne(Expression<Func<TEntity, bool>> expression);
 
         /// <summary>
         /// 刪除
         /// </summary>
-        /// <param name="id">主鍵值</param>
-        void Delete(TKey id);
+        void Delete(TEntity entity);
 
         /// <summary>
         /// 更新

@@ -6,7 +6,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MameToppleApi.Helpers;
+using MameToppleApi.Hubs;
 using MameToppleApi.Models;
+using MameToppleApi.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +38,17 @@ namespace MameToppleApi
         {
             services.AddControllers();
             services.AddDbContext<ToppleDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToppleDBContext")));
+            services.AddScoped<IRepository<Doll>, GenericRepository<Doll>>();
+            services.AddScoped<IRepository<User>, GenericRepository<User>>();
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowCredentials();
+                    });
+            });
+            services.AddSignalR(); // include signalR service
             services.AddSingleton<JwtHelpers>();//註冊JwtHelpers
             services.AddSwaggerGen();//註冊Swagger，定義一個或多個Swagger文件。
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) //註冊JWT
@@ -79,9 +92,11 @@ namespace MameToppleApi
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthentication(); //驗證
 
@@ -100,6 +115,7 @@ namespace MameToppleApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<MameHub>("/mamehub");
             });
         }
     }
