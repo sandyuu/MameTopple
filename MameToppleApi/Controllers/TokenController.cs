@@ -35,11 +35,11 @@ namespace MameToppleApi.Controllers
         /// <returns>回傳Token</returns>
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<string>> SignIn(LoginViewModel login)
+        public async Task<ActionResult<string>> Login(LoginViewModel login)
         {
             if (await ValidateUser(login))
             {
-                return _jwt.GenerateToken(login.Account, "admin@gmail.com");
+                return _jwt.GenerateToken(login.Account);
             }
             else
             {
@@ -48,7 +48,7 @@ namespace MameToppleApi.Controllers
         }
         private async Task<bool> ValidateUser(LoginViewModel login)
         {
-            if (await _userService.SignInCheck(login))
+            if (await _userService.LoginVerify(login))
             {
                 return true;
             }

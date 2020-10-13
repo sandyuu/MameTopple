@@ -48,9 +48,9 @@ namespace MameToppleApi
         {
             services.AddControllers();
             services.AddDbContext<ToppleDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToppleDBContext")));
-            // services.AddScoped<IRepository<Doll>, GenericRepository<Doll>>();
-            // services.AddScoped<IRepository<User>, GenericRepository<User>>();
-            // services.AddScoped<IUserService, UserService>(); //註冊UserService
+            services.AddScoped<IRepository<Doll>, GenericRepository<Doll>>();
+            services.AddScoped<IRepository<User>, GenericRepository<User>>();
+            services.AddScoped<IUserService, UserService>(); //註冊UserService
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
