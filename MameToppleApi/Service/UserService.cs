@@ -4,10 +4,12 @@ using MameToppleApi.Interfaces;
 using MameToppleApi.Models;
 using MameToppleApi.Models.ViewModels;
 using MameToppleApi.Repository;
+using MameToppleApi.Utility;
 using Microsoft.EntityFrameworkCore;
 
 namespace MameToppleApi.Service
 {
+    [DependencyInjection]
     public class UserService : IUserService
     {
         private readonly IRepository<User> _genericRepository;
@@ -43,7 +45,7 @@ namespace MameToppleApi.Service
         public async Task<bool> SignInCheck(LoginViewModel loginVM)
         {
             var Users = await _genericRepository.GetAllAsync();
-            var hasUser = Users.Any(x => x.Account == loginVM.Username && x.Password == loginVM.Password);
+            var hasUser = Users.Any(x => x.Account == loginVM.Account && x.Password == loginVM.Account);
             if (hasUser)
             {
                 return true;

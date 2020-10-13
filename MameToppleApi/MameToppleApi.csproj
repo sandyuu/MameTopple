@@ -5,6 +5,8 @@
     <UserSecretsId>60388b1d-2967-4baf-a2c7-e5af932bb804</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="6.0.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="3.1.8" />
     <PackageReference Include="Microsoft.Composition" Version="1.0.31" />

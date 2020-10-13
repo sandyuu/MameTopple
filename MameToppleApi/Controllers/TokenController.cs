@@ -39,7 +39,7 @@ namespace MameToppleApi.Controllers
         {
             if (await ValidateUser(login))
             {
-                return _jwt.GenerateToken(login.Username, "admin@gmail.com");
+                return _jwt.GenerateToken(login.Account, "admin@gmail.com");
             }
             else
             {
