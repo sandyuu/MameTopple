@@ -10,10 +10,10 @@ namespace MameToppleApi.Service
 {
     public class UserService : IUserService
     {
-        private readonly UserRepository _userRepository;
-        public UserService(UserRepository userRepository)
+        private readonly IRepository<User> _genericRepository;
+        public UserService(IRepository<User> genericRepository)
         {
-            _userRepository = userRepository;
+            _genericRepository = genericRepository;
         }
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace MameToppleApi.Service
         /// <param name="user">user資料表</param>
         public void Create(User user)
         {
-            _userRepository.Create(user);
+            _genericRepository.Create(user);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace MameToppleApi.Service
         /// <returns>找到的實體 或 null</returns>
         public User GetById(string account)
         {
-            return _userRepository.GetById(account);
+            return _genericRepository.GetOne(x => x.Account == account);
         }
 
         /// <summary>
@@ -40,9 +40,11 @@ namespace MameToppleApi.Service
         /// </summary>
         /// <param name="loginVM"></param>
         /// <returns>true or false</returns>
-        public bool SignInCheck(LoginViewModel loginVM)
+        public async Task<bool> SignInCheck(LoginViewModel loginVM)
         {
-            if (_userRepository.GetAll().Any(x => x.Account == loginVM.Username && x.Password == loginVM.Password))
+            var Users = await _genericRepository.GetAllAsync();
+            var hasUser = Users.Any(x => x.Account == loginVM.Username && x.Password == loginVM.Password);
+            if (hasUser)
             {
                 return true;
             }

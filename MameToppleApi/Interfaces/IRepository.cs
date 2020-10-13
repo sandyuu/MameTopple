@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 /// </summary>
 namespace MameToppleApi.Repository
 {
-    public interface IRepository<TEntity> : IDisposable
+    public interface IRepository<TEntity>
     {
         /// <summary>
         /// 新增

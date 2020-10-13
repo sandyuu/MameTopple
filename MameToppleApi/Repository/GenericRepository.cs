@@ -32,7 +32,7 @@ namespace MameToppleApi.Repository
 
         public void Delete(TEntity entity)
         {
-            if(entity == null)
+            if (entity == null)
             {
                 throw new NotImplementedException();
             }
@@ -56,7 +56,7 @@ namespace MameToppleApi.Repository
 
         public void Update(TEntity entity)
         {
-            if(entity == null)
+            if (entity == null)
             {
                 throw new NotImplementedException();
             }

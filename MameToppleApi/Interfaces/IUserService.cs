@@ -8,6 +8,6 @@ namespace MameToppleApi.Interfaces
     {
         void Create(User user);
         User GetById(string account);
-        bool SignInCheck(LoginViewModel loginVM);
+        Task<bool> SignInCheck(LoginViewModel loginVM);
     }
 }

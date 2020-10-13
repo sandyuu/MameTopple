@@ -42,6 +42,7 @@ namespace MameToppleApi
             services.AddDbContext<ToppleDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToppleDBContext")));
             services.AddScoped<IRepository<Doll>, GenericRepository<Doll>>();
             services.AddScoped<IRepository<User>, GenericRepository<User>>();
+            services.AddScoped<IUserService, UserService>(); //註冊UserService
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
@@ -53,8 +54,6 @@ namespace MameToppleApi
             services.AddSignalR(); // include signalR service
             services.AddSingleton<JwtHelpers>();//註冊JwtHelpers
             services.AddSwaggerGen();//註冊Swagger，定義一個或多個Swagger文件。
-            services.AddScoped<IUserService, UserService>(); //註冊UserService
-            services.AddScoped(typeof(IRepository<User, string>), typeof(UserRepository));
             //註冊JWT  
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
