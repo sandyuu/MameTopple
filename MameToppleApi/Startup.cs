@@ -21,7 +21,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Autofac;
-using MameToppleApi.Utility;
 
 namespace MameToppleApi
 {
@@ -37,10 +36,20 @@ namespace MameToppleApi
         //Autofac的使用
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
-                .Where(x => x.GetCustomAttribute<DependencyInjection>() != null)
+            // Autofac註冊泛型Repository
+            builder.RegisterGeneric(typeof(GenericRepository<>))
+                .As(typeof(IRepository<>));
+
+            // Autofac註冊所有Service結尾的Interface
+            builder.RegisterAssemblyTypes(typeof(Program).Assembly)
+                .Where(t => t.Name.EndsWith("Service"))
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
+
+            // builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
+            //     .Where(x => x.GetCustomAttribute<DependencyInjection>() != null)
+            //     .AsImplementedInterfaces()
+            //     .InstancePerLifetimeScope();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -48,9 +57,9 @@ namespace MameToppleApi
         {
             services.AddControllers();
             services.AddDbContext<ToppleDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToppleDBContext")));
-            services.AddScoped<IRepository<Doll>, GenericRepository<Doll>>();
-            services.AddScoped<IRepository<User>, GenericRepository<User>>();
-            services.AddScoped<IUserService, UserService>(); //註冊UserService
+            // services.AddScoped<IRepository<Doll>, GenericRepository<Doll>>();
+            // services.AddScoped<IRepository<User>, GenericRepository<User>>();
+            // services.AddScoped<IUserService, UserService>(); //註冊UserService
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
