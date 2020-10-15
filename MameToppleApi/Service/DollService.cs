@@ -4,29 +4,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MameToppleApi.Interface;
 
 namespace MameToppleApi.Service
 {
-    public class DollService
+    public class DollService : IDollService
     {
-        public IEnumerable<Doll> GetAllDolls()
+        private readonly IRepository<Doll> _repository;
+
+        public DollService(IRepository<Doll> repository)
         {
-            using(var _context = new ToppleDBContext())
-            {
-                var repo = new GenericRepository<Doll>(_context).GetAllAsync();
-                var dolls = repo.Result.OrderBy(x => Guid.NewGuid()).AsEnumerable();
-                return dolls;
-            }
+            _repository = repository;
         }
 
-        public IEnumerable<Doll> GetMissonDolls()
+        public ICollection<Doll> GetAllDolls()
         {
-            using(var _context = new ToppleDBContext())
-            {
-                var dolls = new GenericRepository<Doll>(_context).GetAllAsync().Result.OrderBy(x => Guid.NewGuid()).AsEnumerable();
-                IEnumerable<Doll> result = dolls.Take(3);
-                return result;
-            }
+            return _repository.GetAllAsync().Result.OrderBy(x => Guid.NewGuid()).ToList();
+        }
+
+        public ICollection<Doll> GetMissonDolls()
+        {
+            return _repository.GetAllAsync().Result.OrderBy(x => Guid.NewGuid()).Take(3).ToList();
         }
     }
 }

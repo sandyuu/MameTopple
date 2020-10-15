@@ -10,7 +10,7 @@ namespace MameToppleApi.Repository
 {
     public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        private ToppleDBContext _context;
+        private readonly ToppleDBContext _context;
         protected ToppleDBContext Context { get { return _context; } }
         public GenericRepository(ToppleDBContext context)
         {
@@ -37,11 +37,6 @@ namespace MameToppleApi.Repository
                 throw new NotImplementedException();
             }
             _context.Entry(entity).State = EntityState.Deleted;
-        }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()

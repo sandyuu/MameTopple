@@ -7,8 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using MameToppleApi.Helpers;
 using MameToppleApi.Hubs;
+using MameToppleApi.Interface;
 using MameToppleApi.Models;
 using MameToppleApi.Repository;
+using MameToppleApi.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -40,6 +42,8 @@ namespace MameToppleApi
             services.AddDbContext<ToppleDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToppleDBContext")));
             services.AddScoped<IRepository<Doll>, GenericRepository<Doll>>();
             services.AddScoped<IRepository<User>, GenericRepository<User>>();
+            services.AddScoped<IDollService, DollService>();
+            services.AddScoped<IGameService, GameService>();
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
@@ -48,7 +52,9 @@ namespace MameToppleApi
                         builder.AllowCredentials();
                     });
             });
-            services.AddSignalR(); // include signalR service
+            services.AddSignalR(option => {
+                option.EnableDetailedErrors = true;
+            }); // include signalR service
             services.AddSingleton<JwtHelpers>();//註冊JwtHelpers
             services.AddSwaggerGen();//註冊Swagger，定義一個或多個Swagger文件。
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) //註冊JWT
