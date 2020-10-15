@@ -21,6 +21,7 @@ namespace MameToppleApi.Models
         public virtual DbSet<Doll> Dolls { get; set; }
         public virtual DbSet<Phrase> Pharses { get; set; }
         public virtual DbSet<Sticker> Stickers { get; set; }
+        public virtual DbSet<Card> Cards { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

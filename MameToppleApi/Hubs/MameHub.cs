@@ -1,4 +1,5 @@
 ﻿using MameToppleApi.Interface;
+using MameToppleApi.Interfaces;
 using MameToppleApi.Models;
 using MameToppleApi.Models.ViewModels;
 using MameToppleApi.Repository;
@@ -15,10 +16,12 @@ namespace MameToppleApi.Hubs
     {
         private readonly IDollService _dollService;
         private readonly IGameService _gameService;
-        public MameHub(IDollService dollService, IGameService gameService)
+        private readonly ICardService _cardService;
+        public MameHub(IDollService dollService, IGameService gameService, ICardService cardService)
         {
             _dollService = dollService;
             _gameService = gameService;
+            _cardService = cardService;
         }
         public static Dictionary<string, PlayerViewModel> player { get; set; }
         public static List<Doll> tempTower { get; set; }
