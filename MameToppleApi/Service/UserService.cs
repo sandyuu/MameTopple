@@ -5,12 +5,10 @@ using MameToppleApi.Interfaces;
 using MameToppleApi.Models;
 using MameToppleApi.Models.ViewModels;
 using MameToppleApi.Repository;
-using MameToppleApi.Utility;
 using Microsoft.EntityFrameworkCore;
 
 namespace MameToppleApi.Service
 {
-    [DependencyInjection]
     public class UserService : IUserService
     {
         private readonly IRepository<User> _genericRepository;
