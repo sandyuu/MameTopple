@@ -15,7 +15,7 @@ namespace MameToppleApi.Helpers
         {
             configuration = _configuration;
         }
-        public string GenerateToken(string userName, string email, int expireMinutes = 30)
+        public string GenerateToken(string account, int expireMinutes = 30)
         {
             var issuer = configuration.GetValue<string>("JwtSettings:Issuer");
             var signKey = configuration.GetValue<string>("JwtSettings:SignKey");
@@ -25,7 +25,7 @@ namespace MameToppleApi.Helpers
 
             // 在 RFC 7519 規格中(Section#4)，總共定義了 7 個預設的 Claims，我們應該只用的到兩種！
             //claims.Add(new Claim(JwtRegisteredClaimNames.Iss, issuer));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, userName)); // User.Identity.Name
+            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, account)); // User.Identity.Name
             //claims.Add(new Claim(JwtRegisteredClaimNames.Aud, "The Audience"));
             //claims.Add(new Claim(JwtRegisteredClaimNames.Exp, DateTimeOffset.UtcNow.AddMinutes(30).ToUnixTimeSeconds().ToString()));
             //claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString())); // 必須為數字
@@ -33,13 +33,13 @@ namespace MameToppleApi.Helpers
             claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())); // JWT ID
 
             // 網路上常看到的這個 NameId 設定是多餘的
-            //claims.Add(new Claim(JwtRegisteredClaimNames.NameId, userName));
+            //claims.Add(new Claim(JwtRegisteredClaimNames.NameId, account));
 
             // 這個 Claim 也以直接被 JwtRegisteredClaimNames.Sub 取代，所以也是多餘的
-            //claims.Add(new Claim(ClaimTypes.Name, userName));
+            //claims.Add(new Claim(ClaimTypes.Name, account));
 
             // 你可以自行擴充 "roles" 加入登入者該有的角色
-            if (email == "admin@gmail.com")
+            if (account == "admin@gmail.com")
             {
                 claims.Add(new Claim("roles", "Admin"));
             }

@@ -1,4 +1,5 @@
 ﻿using MameToppleApi.Models;
+using MameToppleApi.Utility;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace MameToppleApi.Repository
 {
+    [DependencyInjection]
     public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private readonly ToppleDBContext _context;
@@ -32,7 +34,7 @@ namespace MameToppleApi.Repository
 
         public void Delete(TEntity entity)
         {
-            if(entity == null)
+            if (entity == null)
             {
                 throw new NotImplementedException();
             }
@@ -51,7 +53,7 @@ namespace MameToppleApi.Repository
 
         public void Update(TEntity entity)
         {
-            if(entity == null)
+            if (entity == null)
             {
                 throw new NotImplementedException();
             }
