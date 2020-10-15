@@ -26,12 +26,12 @@ namespace MameToppleApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<UserViewModel> GetUser(string id)
         {
-            var user = _userService.GetById(id);
-            if (user == null)
+            var userVM = _userService.GetById(id);
+            if (userVM == null)
             {
                 return NotFound();
             }
-            return user;
+            return userVM;
         }
 
         // PUT: api/User/5
@@ -73,8 +73,7 @@ namespace MameToppleApi.Controllers
         public ActionResult<User> CreateUser(User user) //Create新增註冊
         {
             _userService.Create(user);
-
-            return CreatedAtAction("CreateUser", new { id = user.Account }, user);
+            return Ok();
         }
 
         // DELETE: api/User/5

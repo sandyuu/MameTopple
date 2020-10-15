@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Isopoh.Cryptography.Argon2;
 using MameToppleApi.Interfaces;
 using MameToppleApi.Models;
 using MameToppleApi.Models.ViewModels;
@@ -27,6 +28,7 @@ namespace MameToppleApi.Service
         {
             if (UserExists(user.Account).Result)
                 throw new ArgumentException($"Email:{user.Account} 已經被註冊");
+            user.Password = Argon2.Hash(user.Password);
             _genericRepository.Create(user);
         }
 
@@ -57,11 +59,15 @@ namespace MameToppleApi.Service
         /// <returns>true or false</returns>
         public async Task<bool> LoginVerify(LoginViewModel loginVM)
         {
-            var Users = await _genericRepository.GetAllAsync();
-            var userExist = Users.Any(x => x.Account == loginVM.Account && x.Password == loginVM.Password);
+            var AllUsers = await _genericRepository.GetAllAsync();
+            var userExist = AllUsers.Any(x => x.Account == loginVM.Account);
             if (userExist)
             {
-                return true;
+                var passwordHash = AllUsers.Single(x => x.Account == loginVM.Account).Password;
+                if (Argon2.Verify(passwordHash, loginVM.Password))
+                {
+                    return true;
+                }
             }
             return false;
         }
