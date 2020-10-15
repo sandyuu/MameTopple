@@ -162,7 +162,6 @@ $card-transition-delay-time: 1s;
                 width: 100%;
                 height: 100%;
                 transform-style: preserve-3d;
-                animation-delay:2s;
                 animation: rotate-inverse $card-transition-time $card-transition-delay-time linear both;
                 margin-left: 10px;
                 
