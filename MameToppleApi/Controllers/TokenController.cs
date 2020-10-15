@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MameToppleApi.Helpers;
+using MameToppleApi.Interfaces;
 using MameToppleApi.Models;
 using MameToppleApi.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MameToppleApi.Controllers
@@ -17,10 +17,14 @@ namespace MameToppleApi.Controllers
     public class TokenController : ControllerBase
     {
         private readonly JwtHelpers _jwt;
+        private readonly ToppleDBContext _context;
+        private readonly IUserService _userService;
 
-        public TokenController(JwtHelpers jwt)
+        public TokenController(JwtHelpers jwt, ToppleDBContext context, IUserService userService)
         {
             _jwt = jwt;
+            _context = context;
+            _userService = userService;
         }
 
 
@@ -31,21 +35,24 @@ namespace MameToppleApi.Controllers
         /// <returns>回傳Token</returns>
         [AllowAnonymous]
         [HttpPost]
-        public ActionResult<string> SignIn(LoginViewModel login)
+        public async Task<ActionResult<string>> Login(LoginViewModel login)
         {
-            if (ValidateUser(login))
+            if (await ValidateUser(login))
             {
-                return _jwt.GenerateToken(login.Username, "admin@gmail.com");
+                return _jwt.GenerateToken(login.Account);
             }
             else
             {
                 return BadRequest();
             }
         }
-        private bool ValidateUser(LoginViewModel login)
+        private async Task<bool> ValidateUser(LoginViewModel login)
         {
-
-            return true; // TODO 和資料庫比對使用者登入資料
+            if (await _userService.LoginVerify(login))
+            {
+                return true;
+            }
+            return false;
         }
 
         [Authorize] //通過驗證才能存取

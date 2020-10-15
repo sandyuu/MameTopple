@@ -9,18 +9,18 @@ using MameToppleApi.Helpers;
 using MameToppleApi.Hubs;
 using MameToppleApi.Models;
 using MameToppleApi.Repository;
+using MameToppleApi.Interfaces;
+using MameToppleApi.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Autofac;
 
 namespace MameToppleApi
 {
@@ -33,13 +33,33 @@ namespace MameToppleApi
 
         public IConfiguration Configuration { get; }
 
+        //Autofac的使用
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            // Autofac註冊泛型Repository
+            builder.RegisterGeneric(typeof(GenericRepository<>))
+                .As(typeof(IRepository<>));
+
+            // Autofac註冊所有Service結尾的Interface
+            builder.RegisterAssemblyTypes(typeof(Program).Assembly)
+                .Where(t => t.Name.EndsWith("Service"))
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope();
+
+            // builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
+            //     .Where(x => x.GetCustomAttribute<DependencyInjection>() != null)
+            //     .AsImplementedInterfaces()
+            //     .InstancePerLifetimeScope();
+        }
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
             services.AddDbContext<ToppleDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToppleDBContext")));
-            services.AddScoped<IRepository<Doll>, GenericRepository<Doll>>();
-            services.AddScoped<IRepository<User>, GenericRepository<User>>();
+            // services.AddScoped<IRepository<Doll>, GenericRepository<Doll>>();
+            // services.AddScoped<IRepository<User>, GenericRepository<User>>();
+            // services.AddScoped<IUserService, UserService>(); //註冊UserService
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
@@ -51,8 +71,8 @@ namespace MameToppleApi
             services.AddSignalR(); // include signalR service
             services.AddSingleton<JwtHelpers>();//註冊JwtHelpers
             services.AddSwaggerGen();//註冊Swagger，定義一個或多個Swagger文件。
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme) //註冊JWT
-            .AddJwtBearer(options =>
+            //註冊JWT  
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 // 當驗證失敗時，回應標頭會包含 WWW-Authenticate 標頭，這裡會顯示失敗的詳細錯誤原因
                 options.IncludeErrorDetails = true; // 預設值為 true，有時會特別關閉
