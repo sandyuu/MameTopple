@@ -1,0 +1,272 @@
+*{
+    -moz-user-select: none; 
+    -webkit-user-select: none; 
+}
+$card-transition-time: .6s;
+$card-transition-delay-time: 1s;
+
+@keyframes rotate {
+    0% {
+      transform: rotateY(0);
+    }
+    70% {
+      transform: rotateY(200deg);
+    }
+    100% {
+      transform: rotateY(180deg);
+    }
+  }
+  
+  @keyframes rotate-inverse {
+    0% {
+      transform: rotateY(180deg);
+    }
+    70% {
+      transform: rotateY(-20deg);
+    }
+    100% {
+      transform: rotateY(0);
+    }
+  }
+  
+.game-bg{ 
+    position: relative;
+    &:after{
+        content : "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-image: url('../images/mamegoma-bg.png');
+        width: 100%;
+        height: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        opacity : 0.1;
+        z-index: -1;    
+    }
+}
+
+
+.game-content{
+    padding: 0;
+    width: 100%;
+    .stone{
+        background-image: url('../images/gameboard-stone.png');
+        background-size: 50px 50px;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+}
+.user-icon{
+    width: 178px;
+    height: 150px;
+}
+.user-top{
+    background-image: url('../images/user-icon-top.png');
+}
+.user-bottom{
+    background-image: url('../images/user-icon-bottom.png');
+}
+.user-left{
+    background-image: url('../images/user-icon-left.png');
+}
+.user-right{
+    background-image: url('../images/user-icon-right.png');
+}
+
+.center-content{
+    display: flex;
+    flex-direction: column;
+    
+    height: 100vh;
+    padding:0;
+    
+    .location-top{
+        width: 100%;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+
+        justify-content: center;
+    }
+    .game-board{
+        flex-grow: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 100px 0;
+        .mame-line{
+            width:100%;
+            height: 60px;
+            background-color: rgba(255, 220, 175, 0.315);
+
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            .mame-tiki{
+                width: calc(100%/8);
+                height: 100%;
+                border-radius: 3px;
+            }
+            .mame-tiki-1{
+                // background-color: rgba(140, 232, 255, 0.623);#E85D2D);
+                // background: #ee9ca7;  /* fallback for old browsers */
+                background: -webkit-linear-gradient(to bottom, #ffb8c0, #ee9ca7);  /* Chrome 10-25, Safari 5.1-6 */
+                background: linear-gradient(to bottom, #ffb8c0, #ee9ca7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            }
+            .mame-tiki-2{
+                background-color: #ffc4769f;
+                background: #EDE574;  /* fallback for old browsers */
+                background: -webkit-linear-gradient(to bottom, #f0f5c4, #fff89c);  /* Chrome 10-25, Safari 5.1-6 */
+                background: linear-gradient(to bottom, #f0f5c4, #fff89c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                
+            }
+            .mame-tiki-3{
+                // background-color: #99ffa69f;
+                background: -webkit-linear-gradient(to bottom, #bfffc89f, #99ffa69f);  /* Chrome 10-25, Safari 5.1-6 */
+                background: linear-gradient(to bottom, #bfffc89f, #99ffa69f); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+                
+            }
+        }
+    }
+    .location-bottom{
+        // padding: 0 10px;
+        width: 100%;
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+
+        justify-content: center;
+        position: relative;
+        
+        .cards-panel-ud{
+            position: relative;
+                
+        }
+        .mame-card{
+            width: 120px;
+            height:180px;
+            perspective: 600px;
+            position: relative;
+            position: absolute;
+            bottom:0;
+            &.is-switched {
+               .mame-card-wrapper {
+                  animation: rotate $card-transition-time linear both;
+               }
+            }
+            .mame-card-wrapper {
+                width: 100%;
+                height: 100%;
+                transform-style: preserve-3d;
+                animation: rotate-inverse $card-transition-time $card-transition-delay-time linear both;
+                margin-left: 10px;
+                
+                .mame-card-side {
+                    backface-visibility: hidden;
+                    position: absolute;
+                    bottom: 0;
+                    width: 100%;
+                    height: 100%;
+
+
+                    &.is-active {
+                       position: static;
+                    }
+                    &:after{
+                        content : "";
+                        display: block;
+                        position: absolute;
+                        bottom: 0;
+                        background-image: url('../images/mamegoma_UP.png');
+                        border-radius: 10px;
+        
+                        width: 100%;
+                        height: 100%;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: cover;
+                        filter: drop-shadow(8px 8px 5px rgba(0, 0, 0, 0.3));
+                        
+                        transition: .3s;
+                    }
+                    &:hover:after{
+                        position: absolute;
+    
+                        border: 1px solid #ffef91;
+                        // box-shadow: 0 0 0 5px #ffee8b9d;
+                        box-shadow: 0 0 5px 5px #ffee8bbb;
+                        filter: drop-shadow(6px 7px 4px rgba(0, 0, 0, 0.3));
+    
+                        width: 110%;
+                        height: 110%;
+                        top: -30px;
+                    }
+                }              
+                
+                 .mame-card-side-back {
+                    transform: rotateY(180deg);
+                    width: 100%;
+                    height: 100%;
+                    &:after{
+                        content : "";
+                        display: block;
+                        position: absolute;
+                        bottom: 0;
+                        background-image: url('../images/mamegoma_card.png');
+                        border-radius: 10px;
+        
+                        width: 100%;
+                        height: 100%;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: cover;
+                        filter: drop-shadow(8px 8px 5px rgba(0, 0, 0, 0.3));
+                        
+                        transition: .3s;
+                    }
+                }
+                
+            }
+
+
+            
+            
+        }
+    }   
+}
+
+.location-left{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    justify-content: center;
+}
+.location-right{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+.cards-panel{       
+    background-color: rgba(255, 205, 255, 0.5);
+    border-radius: 10px;
+    
+}
+.cards-panel-ud{
+    width:100%;
+    height: 150px;        
+}
+.cards-panel-lr{
+    width:150px;
+    height: 70%;       
+}

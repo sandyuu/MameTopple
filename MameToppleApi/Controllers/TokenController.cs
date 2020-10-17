@@ -55,14 +55,14 @@ namespace MameToppleApi.Controllers
             return false;
         }
 
-        [Authorize] //通過驗證才能存取
+        [Authorize(Roles = "Admin")] //通過驗證才能存取
         [HttpGet]
         public IActionResult GetClaims()
         {
             return Ok(User.Claims.Select(p => new { p.Type, p.Value }));
         }
 
-        [Authorize(Roles = "Admin")] //通過驗證才能存取
+        [Authorize] //通過驗證才能存取
         [HttpGet]
         public IActionResult GetUserName()
         {
