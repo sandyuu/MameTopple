@@ -10,7 +10,7 @@ namespace MameToppleApi.Interface
 {
     public interface IGameService
     {
-        ICollection<PlayerViewModel> GetPlayerInfo(List<PlayerViewModel> player);
+        PlayerViewModel GetPlayerInfo(string account);
 
         ICollection<PlayerViewModel> GetResult(List<PlayerViewModel> players);
 
@@ -21,5 +21,7 @@ namespace MameToppleApi.Interface
         List<Doll> DropDwon(List<Doll> dolls);
 
         List<Doll> ChosenDollMove(Doll doll, List<Doll> dolls, string cardName);
+
+        int CheckPoint(List<Doll> dolls, List<Doll> missionDolls);
     }
 }
