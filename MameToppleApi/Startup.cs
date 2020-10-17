@@ -21,6 +21,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Autofac;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace MameToppleApi
 {
@@ -56,19 +57,19 @@ namespace MameToppleApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSpaStaticFiles(options => options.RootPath = "MameVue/dist");
             services.AddDbContext<ToppleDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToppleDBContext")));
-            services.AddScoped<IRepository<Doll>, GenericRepository<Doll>>();
-            services.AddScoped<IRepository<User>, GenericRepository<User>>();
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
                     builder =>
                     {
-                        builder.AllowCredentials();
+                        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                     });
             });
             services.AddSignalR(option => {
                 option.EnableDetailedErrors = true;
+                option.KeepAliveInterval = TimeSpan.FromMinutes(1);
             }); // include signalR service
             services.AddSingleton<JwtHelpers>();//註冊JwtHelpers
             services.AddSwaggerGen();//註冊Swagger，定義一個或多個Swagger文件。
@@ -113,7 +114,7 @@ namespace MameToppleApi
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -125,18 +126,29 @@ namespace MameToppleApi
 
             app.UseSwagger(); //啟用中介軟體為產生的 JSON 文件和 Swagger UI 提供服務
 
-            // 啟用中介軟體提供swagger-ui (HTML, JS, CSS, etc.),
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<MameHub>("/mamehub");
+            });
+
+            //啟用中介軟體開啟Vue頁面
+            app.UseSpaStaticFiles();
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "MameVue";
+                if (env.IsDevelopment())
+                {
+                    spa.UseVueDevelopmentServer();
+                }
+            });
+
+            //啟用中介軟體提供swagger - ui(HTML, JS, CSS, etc.),
             // 指定 Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 c.RoutePrefix = string.Empty;
-            });
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                endpoints.MapHub<MameHub>("/mamehub");
             });
         }
     }

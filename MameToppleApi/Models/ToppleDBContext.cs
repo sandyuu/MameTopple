@@ -55,7 +55,7 @@ namespace MameToppleApi.Models
 
                 entity.Property(e => e.Password)
                     .IsRequired()
-                    .HasMaxLength(50)
+                    .HasMaxLength(150)
                     .HasColumnName("password");
 
                 entity.Property(e => e.Win).HasColumnName("win");

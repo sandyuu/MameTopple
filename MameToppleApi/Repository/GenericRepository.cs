@@ -46,7 +46,7 @@ namespace MameToppleApi.Repository
 
         public TEntity GetOne(Expression<Func<TEntity, bool>> expression)
         {
-            return (TEntity)_context.Set<TEntity>().Where(expression);
+            return _context.Set<TEntity>().Single(expression);
         }
 
         public void Update(TEntity entity)

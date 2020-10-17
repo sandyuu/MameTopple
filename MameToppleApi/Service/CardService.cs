@@ -1,4 +1,5 @@
-﻿using MameToppleApi.Models;
+﻿using MameToppleApi.Interfaces;
+using MameToppleApi.Models;
 using MameToppleApi.Repository;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,9 @@ namespace MameToppleApi.Service
             _repository = repository;
         }
 
-        public List<Card> GetAllCards()
+        public IEnumerable<Card> GetAllCards()
         {
-            return _repository.GetAllAsync().Result.OrderBy(x => x.Id).ToList();
+            return _repository.GetAllAsync().Result.OrderBy(x => x.Id).AsEnumerable();
         }
 
         public Card GetCard(int Id)
