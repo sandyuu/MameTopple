@@ -1,7 +1,6 @@
-﻿using MameToppleApi.Interface;
+﻿using MameToppleApi.Interfaces;
 using MameToppleApi.Models;
 using MameToppleApi.Models.ViewModels;
-using MameToppleApi.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +56,7 @@ namespace MameToppleApi.Service
 
         public List<Doll> ChosenDollMove(Doll doll, List<Doll> dolls, string cardName)
         {
-            var targetIndex = dolls.FindIndex(x => x.Id == doll.Id); 
+            var targetIndex = dolls.FindIndex(x => x.Id == doll.Id);
             switch (cardName)
             {
                 case "UpThree":

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 /// <summary>
 /// Repository的interface
 /// </summary>
-namespace MameToppleApi.Repository
+namespace MameToppleApi.Interfaces
 {
     public interface IRepository<TEntity>
     {

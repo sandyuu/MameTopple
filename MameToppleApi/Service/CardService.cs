@@ -1,5 +1,5 @@
-﻿using MameToppleApi.Models;
-using MameToppleApi.Repository;
+﻿using MameToppleApi.Interfaces;
+using MameToppleApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
