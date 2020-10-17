@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MameToppleApi.Interfaces;
 
 namespace MameToppleApi.Service
 {
-    public class CardService
+    public class CardService : ICardService
     {
         private readonly IRepository<Card> _repository;
 
