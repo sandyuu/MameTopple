@@ -1,3 +1,4 @@
+using System.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,8 +71,12 @@ namespace MameToppleApi.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public ActionResult<User> CreateUser(User user) //Create新增註冊
+        public IActionResult CreateUser(User user) //Create新增註冊
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             _userService.Create(user);
             return Ok();
         }
