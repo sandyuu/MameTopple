@@ -37,10 +37,18 @@
                             <div class="game-board">
                                 <!-- #region mame-line 區域 -->
                                 <div class="mame-line">
-                                    <div class="mame-tiki mame-tiki-3"></div>
-                                    <div class="mame-tiki mame-tiki-2"></div>
-                                    <div class="mame-tiki mame-tiki-1"></div>
+                                    <div v-for="item in items" class="w-100 h-100">
+                                        <div class="mame-tiki mame-tiki-1 ">
+                                            <img v-bind:src="item.image" v-bind:alt="item.name" />
+                                        </div>
+                                    </div>
                                 </div>
+
+                                <!-- <div class="mame-line">
+                                    <div class="mame-tiki mame-tiki-1"></div>
+                                    <div class="mame-tiki mame-tiki-2"></div>
+                                    <div class="mame-tiki mame-tiki-3"></div>
+                                </div> -->
                                 <!-- #endregion mame-line 區域 -->
                             </div>
                             <div class="players location-bottom m-auto">
@@ -86,6 +94,13 @@
             integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
             crossorigin="anonymous"
         ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.8/signalr.min.js"
+            integrity="sha512-hK7hnBBNWFNY9j5bVlQMQYORUdmOmmg70zSkWLZlRphN1dE3x+jDg6dtER8Bre6QROHFw7XzNXje4CKTUjJMZA=="
+            crossorigin="anonymous"
+        ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
+
         <script src="../src/assets/js/GameBoard.js"></script>
     </body>
 </html>

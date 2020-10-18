@@ -107,11 +107,18 @@ $card-transition-delay-time: 1s;
             align-items: center;
             justify-content: flex-end;
             .mame-tiki{
-                width: calc(100%/8);
+                // width: calc(100%/8);
                 height: 100%;
                 border-radius: 3px;
+                margin:0;
+                display: flex;
+                align-items: center;
+        justify-content: center;
+
             }
             .mame-tiki-1{
+                margin:0;
+
                 // background-color: rgba(140, 232, 255, 0.623);#E85D2D);
                 // background: #ee9ca7;  /* fallback for old browsers */
                 background: -webkit-linear-gradient(to bottom, #ffb8c0, #ee9ca7);  /* Chrome 10-25, Safari 5.1-6 */
@@ -181,7 +188,7 @@ $card-transition-delay-time: 1s;
                         display: block;
                         position: absolute;
                         bottom: 0;
-                        background-image: url('../images/mamegoma_UP.png');
+                        background-image: url('../images/Mamegoma_up_1.png');
                         border-radius: 10px;
         
                         width: 100%;
