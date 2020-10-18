@@ -22,6 +22,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Autofac;
 using System.Runtime.InteropServices.ComTypes;
+using Microsoft.OpenApi.Models;
 
 namespace MameToppleApi
 {
@@ -67,12 +68,49 @@ namespace MameToppleApi
                         builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                     });
             });
-            services.AddSignalR(option => {
+            services.AddSignalR(option =>
+            {
                 option.EnableDetailedErrors = true;
                 option.KeepAliveInterval = TimeSpan.FromMinutes(1);
             }); // include signalR service
             services.AddSingleton<JwtHelpers>();//註冊JwtHelpers
-            services.AddSwaggerGen();//註冊Swagger，定義一個或多個Swagger文件。
+            //註冊Swagger，定義一個或多個Swagger文件。
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Description = "在下框中輸入請求頭中需要新增Jwt授權Token：Bearer Token",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    BearerFormat = "JWT",
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
+                var baseDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
             //註冊JWT  
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
@@ -134,14 +172,14 @@ namespace MameToppleApi
 
             //啟用中介軟體開啟Vue頁面
             app.UseSpaStaticFiles();
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "MameVue";
-                if (env.IsDevelopment())
-                {
-                    spa.UseVueDevelopmentServer();
-                }
-            });
+            // app.UseSpa(spa =>
+            // {
+            //     spa.Options.SourcePath = "MameVue";
+            //     if (env.IsDevelopment())
+            //     {
+            //         spa.UseVueDevelopmentServer();
+            //     }
+            // });
 
             //啟用中介軟體提供swagger - ui(HTML, JS, CSS, etc.),
             // 指定 Swagger JSON endpoint.
