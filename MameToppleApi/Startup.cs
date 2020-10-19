@@ -67,10 +67,11 @@ namespace MameToppleApi
                         builder.AllowCredentials();
                     });
             });
-            services.AddSignalR(option => {
+            services.AddSignalR(option =>
+            {
                 option.EnableDetailedErrors = true;
             }); // include signalR service
-            services.AddSingleton<JwtHelpers>();//註冊JwtHelpers
+            services.AddSingleton<JwtHelpersService>();//註冊JwtHelpersService
             services.AddSwaggerGen();//註冊Swagger，定義一個或多個Swagger文件。
             //註冊JWT  
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>

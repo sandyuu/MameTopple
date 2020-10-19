@@ -20,7 +20,7 @@ namespace MameToppleApi.Tests.Controllers
         }
 
         [Test]
-        public void Get_User_Return_UserVM()
+        public void When_GiveId_Then_ReturnUserVM()
         {
             //Arrange 設定初始資料、期望結果//
             //moq 隔離框架
@@ -52,7 +52,7 @@ namespace MameToppleApi.Tests.Controllers
         }
 
         [Test]
-        public void User_CreateUser_Return_BadRequset()
+        public void When_CreateUserModelError_Then_ReturnBadRequeset()
         {
             // Arrange
             var userModel = new User();
@@ -69,7 +69,7 @@ namespace MameToppleApi.Tests.Controllers
         }
 
         [Test]
-        public void User_CreateUser_Return_OK()
+        public void When_CreateUserModelCorrect_Then_ReturnOK()
         {
             // Arrange
             var userModel = new User();
