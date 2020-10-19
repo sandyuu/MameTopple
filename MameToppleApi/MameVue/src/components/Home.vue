@@ -118,7 +118,8 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
-import { LoginPageService } from "../services/LoginPageService";
+    import { LoginPageService } from "../services/LoginPageService";
+
 
 export default {
   name: "Home",
@@ -233,4 +234,4 @@ export default {
   background-size: cover;
   height: 100vh;
 }
-</stylelang=lang=lang=lang=lang=lang=lang=lang=lang=lang=lang=lang=lang=lang=lang=lang=lang=lang=lang=lang=lang=lang=lang=>
+</style>
