@@ -37,14 +37,14 @@ namespace MameToppleApi.Tests.Controllers
                 Account = "test@gmail.com",
                 Password = "123456"
             };
-            _jwtServiceMock.Setup(x => x.GenerateToken("account", 30)).Returns("BearerToken");
-            _userServiceMock.Setup(x => x.LoginVerify(FakeModel)).ReturnsAsync(true);
+            _jwtServiceMock.Setup(x => x.GenerateToken(It.IsAny<string>(), It.IsAny<int>())).Returns("BearerToken");
+            _userServiceMock.Setup(x => x.LoginVerify(It.IsAny<LoginViewModel>())).Returns(Task.FromResult(true));
             TokenController controller = new TokenController(_jwtServiceMock.Object, _contextMock.Object, _userServiceMock.Object);
             // Act: 執行測試的目標，並取得實際結果
-            var actual = await controller.Login(new LoginViewModel() { Account = "admin@gmail.com", Password = "123456" });
+            var actual = await controller.Login(FakeModel);
 
             // Assert: 驗證結果
-            Assert.IsInstanceOf(typeof(string), actual);
+            Assert.IsInstanceOf(typeof(string), actual.Value);
         }
     }
 }
