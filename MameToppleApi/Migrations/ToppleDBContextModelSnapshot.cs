@@ -19,24 +19,42 @@ namespace MameToppleApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0-rc.1.20451.13");
 
-            modelBuilder.Entity("MameToppleApi.Models.Card", b =>
+            modelBuilder.Entity("MameToppleApi.Models.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Account")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("account");
+
+                    b.Property<string>("Avatar")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("avatar");
+
+                    b.Property<int?>("Lose")
                         .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnName("lose");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("NickName")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("nickName");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("varchar(150)")
+                        .HasColumnName("password");
 
-                    b.HasKey("Id");
+                    b.Property<int?>("Win")
+                        .HasColumnType("int")
+                        .HasColumnName("win");
 
-                    b.ToTable("Cards");
+                    b.HasKey("Account");
+
+                    b.ToTable("User");
                 });
-
 #pragma warning restore 612, 618
         }
     }

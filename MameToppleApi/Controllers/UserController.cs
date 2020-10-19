@@ -23,15 +23,20 @@ namespace MameToppleApi.Controllers
         }
 
         // GET: api/User/admin@gmail.com
+        /// <summary>
+        /// 取得使用者個人資料
+        /// </summary>
+        /// <param name="id">帳號Email</param>
+        /// <returns>User資料</returns>
         [HttpGet("{id}")]
         public ActionResult<UserViewModel> GetUser(string id)
         {
-            var user = _userService.GetById(id);
-            if (user == null)
+            var userVM = _userService.GetById(id);
+            if (userVM == null)
             {
                 return NotFound();
             }
-            return user;
+            return userVM;
         }
 
         // PUT: api/User/5
@@ -69,12 +74,17 @@ namespace MameToppleApi.Controllers
         // POST: api/User
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+
+        /// <summary>
+        /// 註冊帳號
+        /// </summary>
+        /// <param name="user">User資料模型</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult<User> CreateUser(User user) //Create新增註冊
         {
             _userService.Create(user);
-
-            return CreatedAtAction("CreateUser", new { id = user.Account }, user);
+            return Ok();
         }
 
         // DELETE: api/User/5

@@ -21,6 +21,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Autofac;
+using System.Runtime.InteropServices.ComTypes;
+using Microsoft.OpenApi.Models;
 
 namespace MameToppleApi
 {
@@ -56,22 +58,59 @@ namespace MameToppleApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSpaStaticFiles(options => options.RootPath = "MameVue/dist");
             services.AddDbContext<ToppleDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToppleDBContext")));
-            services.AddScoped<IRepository<Doll>, GenericRepository<Doll>>();
-            services.AddScoped<IRepository<User>, GenericRepository<User>>();
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
                     builder =>
                     {
-                        builder.AllowCredentials();
+                        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
                     });
             });
-            services.AddSignalR(option => {
+            services.AddSignalR(option =>
+            {
                 option.EnableDetailedErrors = true;
+                option.KeepAliveInterval = TimeSpan.FromMinutes(1);
             }); // include signalR service
             services.AddSingleton<JwtHelpers>();//註冊JwtHelpers
-            services.AddSwaggerGen();//註冊Swagger，定義一個或多個Swagger文件。
+            //註冊Swagger，定義一個或多個Swagger文件。
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                });
+
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Description = "在下框中輸入請求頭中需要新增Jwt授權Token：Bearer Token",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    BearerFormat = "JWT",
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
+                var baseDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
             //註冊JWT  
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
@@ -113,7 +152,7 @@ namespace MameToppleApi
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -125,18 +164,29 @@ namespace MameToppleApi
 
             app.UseSwagger(); //啟用中介軟體為產生的 JSON 文件和 Swagger UI 提供服務
 
-            // 啟用中介軟體提供swagger-ui (HTML, JS, CSS, etc.),
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<MameHub>("/mamehub");
+            });
+
+            //啟用中介軟體開啟Vue頁面
+            app.UseSpaStaticFiles();
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "MameVue";
+                if (env.IsDevelopment())
+                {
+                    spa.UseVueDevelopmentServer();
+                }
+            });
+
+            //啟用中介軟體提供swagger - ui(HTML, JS, CSS, etc.),
             // 指定 Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 c.RoutePrefix = string.Empty;
-            });
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                endpoints.MapHub<MameHub>("/mamehub");
             });
         }
     }

@@ -8,7 +8,7 @@ namespace MameToppleApi.Interfaces
 {
     public interface ICardService
     {
-        List<Card> GetAllCards();
+        IEnumerable<Card> GetAllCards();
 
         Card GetCard(int Id);
     }
