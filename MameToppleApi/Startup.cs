@@ -172,14 +172,14 @@ namespace MameToppleApi
 
             //啟用中介軟體開啟Vue頁面
             app.UseSpaStaticFiles();
-            // app.UseSpa(spa =>
-            // {
-            //     spa.Options.SourcePath = "MameVue";
-            //     if (env.IsDevelopment())
-            //     {
-            //         spa.UseVueDevelopmentServer();
-            //     }
-            // });
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "MameVue";
+                if (env.IsDevelopment())
+                {
+                    spa.UseVueDevelopmentServer();
+                }
+            });
 
             //啟用中介軟體提供swagger - ui(HTML, JS, CSS, etc.),
             // 指定 Swagger JSON endpoint.
