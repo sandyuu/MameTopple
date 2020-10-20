@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-/// <summary>
-/// Repository的interface
-/// </summary>
+// Repository的interface
 namespace MameToppleApi.Interfaces
 {
     public interface IRepository<TEntity>

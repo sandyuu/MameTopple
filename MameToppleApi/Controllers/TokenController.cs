@@ -28,10 +28,10 @@ namespace MameToppleApi.Controllers
         }
 
         /// <summary>
-        /// 登入取得Token
+        /// 登入取得Bearer Token
         /// </summary>
         /// <param name="login"></param>
-        /// <returns>回傳Token</returns>
+        /// <returns>回傳Bearer Token</returns>
         [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<string>> Login(LoginViewModel login)
@@ -46,6 +46,10 @@ namespace MameToppleApi.Controllers
             }
         }
 
+        /// <summary>
+        /// 取得Token內的資訊（需Admin權限）
+        /// </summary>
+        /// <returns>Token資訊</returns>
         [Authorize(Roles = "Admin")] //通過驗證才能存取
         [HttpGet]
         public IActionResult GetClaims()
@@ -53,6 +57,11 @@ namespace MameToppleApi.Controllers
             return Ok(User.Claims.Select(p => new { p.Type, p.Value }));
         }
 
+        /// <summary>
+        /// 取得使用者的名稱（帳號Email）
+        /// Header夾帶Bearer Token
+        /// </summary>
+        /// <returns>回傳使用者的名稱（帳號Email）</returns>
         [Authorize] //通過驗證才能存取
         [HttpGet]
         public IActionResult GetUserName()
@@ -60,6 +69,11 @@ namespace MameToppleApi.Controllers
             return Ok(User.Identity.Name);
         }
 
+        /// <summary>
+        /// 取得Token的GUID
+        /// </summary>
+        /// <returns>GUID</returns>
+        [Authorize] //通過驗證才能存取
         [HttpGet]
         public IActionResult GetUniqueId() //取得Token的GUID
         {
