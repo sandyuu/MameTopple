@@ -1,4 +1,3 @@
-using System.Security.Cryptography.X509Certificates;
 using System;
 using System.Linq.Expressions;
 using MameToppleApi.Interfaces;
@@ -14,6 +13,7 @@ namespace MameToppleApi.Tests.Services
     [TestFixture]
     public class UserServiceTest
     {
+        //Fake資料
         private List<User> fakeUserList = new List<User>()
         {
             new User{Account="t1",Password="t1",Avatar="t1",NickName="t1",Win=0,Lose=0},
@@ -22,11 +22,13 @@ namespace MameToppleApi.Tests.Services
         };
 
         private Mock<IRepository<User>> _genericRepositoryMock;
+        private Mock<IArgon2Adapter> _argon2AdapterMock;
 
         [SetUp]
         public void Setup()
         {
             _genericRepositoryMock = new Mock<IRepository<User>>();
+            _argon2AdapterMock = new Mock<IArgon2Adapter>();
         }
 
         [Test]
@@ -44,7 +46,7 @@ namespace MameToppleApi.Tests.Services
                 Lose = 0
             };
             _genericRepositoryMock.Setup(x => x.GetOne(It.IsAny<Expression<Func<User, bool>>>())).Returns(fakeUser);
-            UserService service = new UserService(_genericRepositoryMock.Object);
+            UserService service = new UserService(_genericRepositoryMock.Object, _argon2AdapterMock.Object);
 
             //Act 呼叫哪個方法進行測試
             var actual = service.GetById("admin@gmail.com");
@@ -62,7 +64,7 @@ namespace MameToppleApi.Tests.Services
                 Password = "t4"
             };
             _genericRepositoryMock.Setup(X => X.GetAllAsync()).ReturnsAsync(fakeUserList);
-            UserService userService = new UserService(_genericRepositoryMock.Object);
+            UserService userService = new UserService(_genericRepositoryMock.Object, _argon2AdapterMock.Object);
             //Act 執行
             var actual = userService.LoginVerify(fakeLoginVM).Result;
             //Assert 斷言
@@ -79,7 +81,8 @@ namespace MameToppleApi.Tests.Services
                 Password = "t1"
             };
             _genericRepositoryMock.Setup(X => X.GetAllAsync()).ReturnsAsync(fakeUserList);
-            UserService userService = new UserService(_genericRepositoryMock.Object);
+            _argon2AdapterMock.Setup(x => x.Verify(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            UserService userService = new UserService(_genericRepositoryMock.Object, _argon2AdapterMock.Object);
             //Act 執行
             var actual = userService.LoginVerify(fakeLoginVM).Result;
             //Assert 斷言

@@ -59,6 +59,7 @@ namespace MameToppleApi
             services.AddDbContext<ToppleDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToppleDBContext")));
             services.AddScoped<IRepository<Doll>, GenericRepository<Doll>>();
             services.AddScoped<IRepository<User>, GenericRepository<User>>();
+            services.AddScoped<IArgon2Adapter, Argon2Adapter>();
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
