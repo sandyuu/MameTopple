@@ -18,6 +18,10 @@ namespace MameToppleApi.Models
         }
 
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Doll> Dolls { get; set; }
+        public virtual DbSet<Phrase> Pharses { get; set; }
+        public virtual DbSet<Sticker> Stickers { get; set; }
+        public virtual DbSet<Card> Cards { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -51,10 +55,8 @@ namespace MameToppleApi.Models
 
                 entity.Property(e => e.Password)
                     .IsRequired()
-                    .HasMaxLength(50)
+                    .HasMaxLength(150)
                     .HasColumnName("password");
-
-                entity.Property(e => e.Point).HasColumnName("point");
 
                 entity.Property(e => e.Win).HasColumnName("win");
             });

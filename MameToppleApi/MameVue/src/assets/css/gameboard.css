@@ -3,6 +3,66 @@
   -webkit-user-select: none;
 }
 
+@-webkit-keyframes rotate {
+  0% {
+    -webkit-transform: rotateY(0);
+            transform: rotateY(0);
+  }
+  70% {
+    -webkit-transform: rotateY(200deg);
+            transform: rotateY(200deg);
+  }
+  100% {
+    -webkit-transform: rotateY(180deg);
+            transform: rotateY(180deg);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    -webkit-transform: rotateY(0);
+            transform: rotateY(0);
+  }
+  70% {
+    -webkit-transform: rotateY(200deg);
+            transform: rotateY(200deg);
+  }
+  100% {
+    -webkit-transform: rotateY(180deg);
+            transform: rotateY(180deg);
+  }
+}
+
+@-webkit-keyframes rotate-inverse {
+  0% {
+    -webkit-transform: rotateY(180deg);
+            transform: rotateY(180deg);
+  }
+  70% {
+    -webkit-transform: rotateY(-20deg);
+            transform: rotateY(-20deg);
+  }
+  100% {
+    -webkit-transform: rotateY(0);
+            transform: rotateY(0);
+  }
+}
+
+@keyframes rotate-inverse {
+  0% {
+    -webkit-transform: rotateY(180deg);
+            transform: rotateY(180deg);
+  }
+  70% {
+    -webkit-transform: rotateY(-20deg);
+            transform: rotateY(-20deg);
+  }
+  100% {
+    -webkit-transform: rotateY(0);
+            transform: rotateY(0);
+  }
+}
+
 .game-bg {
   position: relative;
 }
@@ -117,12 +177,22 @@
 }
 
 .center-content .game-board .mame-line .mame-tiki {
-  width: calc(100%/8);
   height: 100%;
   border-radius: 3px;
+  margin: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .center-content .game-board .mame-line .mame-tiki-1 {
+  margin: 0;
   /* Chrome 10-25, Safari 5.1-6 */
   background: -webkit-gradient(linear, left top, left bottom, from(#ffb8c0), to(#ee9ca7));
   background: linear-gradient(to bottom, #ffb8c0, #ee9ca7);
@@ -163,21 +233,54 @@
   position: relative;
 }
 
-.center-content .location-bottom .mame-card {
-  position: absolute;
-  top: 0;
-  width: 120px;
-  height: 180px;
-  border-width: 0;
+.center-content .location-bottom .cards-panel-ud {
+  position: relative;
 }
 
-.center-content .location-bottom .mame-card:after {
+.center-content .location-bottom .mame-card {
+  width: 120px;
+  height: 180px;
+  -webkit-perspective: 600px;
+          perspective: 600px;
+  position: relative;
+  position: absolute;
+  bottom: 0;
+}
+
+.center-content .location-bottom .mame-card.is-switched .mame-card-wrapper {
+  -webkit-animation: rotate 0.6s linear both;
+          animation: rotate 0.6s linear both;
+}
+
+.center-content .location-bottom .mame-card .mame-card-wrapper {
+  width: 100%;
+  height: 100%;
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  -webkit-animation: rotate-inverse 0.6s 1s linear both;
+          animation: rotate-inverse 0.6s 1s linear both;
+  margin-left: 10px;
+}
+
+.center-content .location-bottom .mame-card .mame-card-wrapper .mame-card-side {
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.center-content .location-bottom .mame-card .mame-card-wrapper .mame-card-side.is-active {
+  position: static;
+}
+
+.center-content .location-bottom .mame-card .mame-card-wrapper .mame-card-side:after {
   content: "";
   display: block;
   position: absolute;
-  top: 0;
-  left: 10px;
-  background-image: url("../images/mamegoma_card.png");
+  bottom: 0;
+  background-image: url("../images/Mamegoma_up_1.png");
   border-radius: 10px;
   width: 100%;
   height: 100%;
@@ -190,7 +293,7 @@
   transition: .3s;
 }
 
-.center-content .location-bottom .mame-card:hover:after {
+.center-content .location-bottom .mame-card .mame-card-wrapper .mame-card-side:hover:after {
   position: absolute;
   border: 1px solid #ffef91;
   -webkit-box-shadow: 0 0 5px 5px #ffee8bbb;
@@ -200,7 +303,31 @@
   width: 110%;
   height: 110%;
   top: -30px;
-  left: 10px;
+}
+
+.center-content .location-bottom .mame-card .mame-card-wrapper .mame-card-side-back {
+  -webkit-transform: rotateY(180deg);
+          transform: rotateY(180deg);
+  width: 100%;
+  height: 100%;
+}
+
+.center-content .location-bottom .mame-card .mame-card-wrapper .mame-card-side-back:after {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: 0;
+  background-image: url("../images/mamegoma_card.png");
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-filter: drop-shadow(8px 8px 5px rgba(0, 0, 0, 0.3));
+          filter: drop-shadow(8px 8px 5px rgba(0, 0, 0, 0.3));
+  -webkit-transition: .3s;
+  transition: .3s;
 }
 
 .location-left {
