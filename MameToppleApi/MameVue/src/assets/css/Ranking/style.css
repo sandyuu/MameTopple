@@ -1,0 +1,156 @@
+html {
+  height: 100vh;
+}
+
+body {
+  background-image: url("../images/ranking.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  background-color: #f7d6d6;
+}
+
+.ranking-container {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 80%;
+  background-color: #faecec;
+  margin-top: 2rem;
+}
+
+.ranking-container .title {
+  font-family: 'Comic Neue', cursive;
+  font-size: 5vw;
+  color: #d4b07a;
+}
+
+.ranking-container .ranking .player-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  text-align: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.ranking-container .ranking .player-container .mame-line {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 50%;
+  background-color: #fff;
+  border-radius: 1vw;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0 1vw 0 1vw;
+  margin: 0;
+}
+
+.ranking-container .ranking .player-container .mame-line .mame-tiki {
+  width: 20%;
+  height: 25%;
+  background-color: #d3fafa;
+  border: #aeaee2 1px solid;
+}
+
+.ranking-container .ranking .player-container .player {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.ranking-container .ranking .player-container .player .medal-img {
+  max-height: 100%;
+  max-width: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.ranking-container .ranking .player-container .player .medal-img img {
+  width: 100%;
+  height: 100%;
+}
+
+.ranking-container .ranking .player-container .player .player-card {
+  width: 16vw;
+  height: 20vw;
+  background-color: white;
+  border-radius: 10%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  text-align: center;
+}
+
+.ranking-container .ranking .player-container .player .player-card .mame-tiki {
+  width: 85%;
+  height: 28%;
+  background-color: #d3fafa;
+  margin: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-radius: 10%;
+}
+
+.ranking-container .ranking .player-container .player .player-card .mame-tiki .mame-tiki-img {
+  width: 100%;
+}
+
+.ranking-container .ranking .player-container .player .player-card .mame-tiki .mame-tiki-img img {
+  width: 100%;
+}
+
+.ranking-container .ranking .player-container .player .player-card .mame-tiki .mame-tiki-name {
+  width: 100%;
+  padding: 0;
+}
+
+.ranking-container .ranking .player-container .player .player-info {
+  width: 120px;
+  height: 160px;
+}
+
+.ranking-container .ranking .player-container .player .player-info .player-img {
+  background-color: #dfd7fd;
+  border-radius: 50%;
+  width: 80%;
+  height: auto;
+}
+
+.ranking-container .ranking .player-container .player .player-info .player-name {
+  font-family: 'Comic Neue', cursive;
+  font-size: 3vw;
+}
+
+.ranking-container .ranking .back-btn {
+  font-family: 'Comic Neue', cursive;
+  font-size: 2vw;
+  margin-bottom: 1rem;
+  margin-top: 5vw;
+}
+/*# sourceMappingURL=style.css.map */

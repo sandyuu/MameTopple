@@ -1,0 +1,153 @@
+html {
+    height: 100vh;
+}
+
+body {
+    background-image: url('../../images/Ranking/ranking.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    background-color: rgb(247, 214, 214);
+}
+
+.ranking-container {
+    align-items: center;
+    justify-content: center;
+    height: 80%;
+    background-color: rgb(250, 236, 236);
+    margin-top: 2rem;
+
+    // background-color: rgb(222, 242, 252);
+    .title {
+        font-family: 'Comic Neue', cursive;
+        font-size: 5vw;
+        color: rgb(212, 176, 122);
+        // color: rgb(212, 176, 122);
+    }
+
+    .ranking {
+        .player-container {
+            display: flex;
+            
+            text-align: center;
+            justify-content: center;
+            .mame-line{
+                display: flex;
+                // width: 80%;
+                height: 50%;
+                background-color: #fff;
+                border-radius: 1vw;
+                align-items: center;
+                padding: 0 1vw 0 1vw;
+                margin: 0;
+                .mame-tiki{
+                    // justify-items: center;
+                    // text-align: center;
+                    width: 20%;
+                    height: 25%;
+                    background-color: rgb(211, 250, 250);
+                    border: rgb(174, 174, 226) 1px solid;
+                }
+            }
+            .player {
+                // width: 100%;
+                // height: 100%;
+                // padding: 30px;
+                display: flex;
+                position: relative;
+
+                .medal-img {
+                    max-height: 100%;
+                    max-width: 100%;
+                    // width: auto;
+                    // height: auto;
+                    // position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    margin: auto;
+                    img{
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+                .player-card{
+
+                    width: 16vw;
+                    height: 20vw;
+                    background-color: rgb(255, 255, 255);
+                    border-radius: 10%;
+
+                    display: flex;
+                    flex-direction: column;
+
+                    align-items: center;
+                    justify-content: center;
+                    text-align: center;
+                    .mame-tiki{
+                        width: 85%;
+                        height: 28%;
+                        background-color: rgb(211, 250, 250);
+                        // border: blue 1px solid;
+                        margin:auto;
+                        display: flex;
+                        align-items: center;
+                    border-radius: 10%;
+
+                        .mame-tiki-img{
+                            width: 100%;
+                            img{
+                            width: 100%;
+
+                            }
+
+                        }
+                        .mame-tiki-name{
+                            width: 100%;
+                            padding: 0;
+
+                        }
+                    }
+
+
+                }
+                .player-info{
+                    // display: flex;
+                    width: 120px;
+                    height: 160px;
+                    
+                    .player-img {
+                        background-color: rgb(223, 215, 253);
+                        border-radius: 50%;
+                        width: 80%;
+                        height: auto;
+                    }
+    
+                    .player-name {
+                        
+                        font-family: 'Comic Neue', cursive;
+                        font-size: 3vw;
+                    }
+                }
+                
+                
+            }
+        }
+
+
+        .back-btn {
+            font-family: 'Comic Neue', cursive;
+            font-size: 2vw;
+            margin-bottom: 1rem;
+            margin-top: 5vw;
+
+
+        }
+
+
+    }
+
+
+}
