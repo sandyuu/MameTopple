@@ -70,6 +70,7 @@ namespace MameToppleApi
             });
             services.AddSignalR(option =>
             {
+                option.ClientTimeoutInterval = TimeSpan.FromMinutes(2);
                 option.EnableDetailedErrors = true;
                 option.KeepAliveInterval = TimeSpan.FromMinutes(1);
             }); // include signalR service
