@@ -1,10 +1,10 @@
 ﻿using MameToppleApi.Models;
-using MameToppleApi.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MameToppleApi.Interface;
+using MameToppleApi.Interfaces;
 
 namespace MameToppleApi.Service
 {
