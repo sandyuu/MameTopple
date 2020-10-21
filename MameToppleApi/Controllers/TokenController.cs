@@ -16,11 +16,11 @@ namespace MameToppleApi.Controllers
     [ApiController]
     public class TokenController : ControllerBase
     {
-        private readonly JwtHelpers _jwt;
+        private readonly IJwtHelpersService _jwt;
         private readonly ToppleDBContext _context;
         private readonly IUserService _userService;
 
-        public TokenController(JwtHelpers jwt, ToppleDBContext context, IUserService userService)
+        public TokenController(IJwtHelpersService jwt, ToppleDBContext context, IUserService userService)
         {
             _jwt = jwt;
             _context = context;
@@ -36,7 +36,7 @@ namespace MameToppleApi.Controllers
         [HttpPost]
         public async Task<ActionResult<string>> Login(LoginViewModel login)
         {
-            if (await ValidateUser(login))
+            if (await _userService.LoginVerify(login))
             {
                 return _jwt.GenerateToken(login.Account);
             }
@@ -44,14 +44,6 @@ namespace MameToppleApi.Controllers
             {
                 return BadRequest();
             }
-        }
-        private async Task<bool> ValidateUser(LoginViewModel login)
-        {
-            if (await _userService.LoginVerify(login))
-            {
-                return true;
-            }
-            return false;
         }
 
         /// <summary>

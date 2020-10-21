@@ -60,6 +60,7 @@ namespace MameToppleApi
             services.AddControllers();
             services.AddSpaStaticFiles(options => options.RootPath = "MameVue/dist");
             services.AddDbContext<ToppleDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToppleDBContext")));
+            services.AddScoped<IArgon2Adapter, Argon2Adapter>();
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
@@ -74,7 +75,7 @@ namespace MameToppleApi
                 option.EnableDetailedErrors = true;
                 option.KeepAliveInterval = TimeSpan.FromMinutes(1);
             }); // include signalR service
-            services.AddSingleton<JwtHelpers>();//註冊JwtHelpers
+            services.AddSingleton<JwtHelpersService>();//註冊JwtHelpersService
             //註冊Swagger，定義一個或多個Swagger文件。
             services.AddSwaggerGen(c =>
             {

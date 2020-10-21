@@ -13,9 +13,11 @@ namespace MameToppleApi.Service
     public class UserService : IUserService
     {
         private readonly IRepository<User> _genericRepository;
-        public UserService(IRepository<User> genericRepository)
+        private readonly IArgon2Adapter _argon2Adapter;
+        public UserService(IRepository<User> genericRepository, IArgon2Adapter argon2Adapter)
         {
             _genericRepository = genericRepository;
+            _argon2Adapter = argon2Adapter;
         }
 
         /// <summary>
@@ -62,7 +64,7 @@ namespace MameToppleApi.Service
             if (userExist)
             {
                 var passwordHash = AllUsers.Single(x => x.Account == loginVM.Account).Password;
-                if (Argon2.Verify(passwordHash, loginVM.Password))
+                if (_argon2Adapter.Verify(passwordHash, loginVM.Password))
                 {
                     return true;
                 }
