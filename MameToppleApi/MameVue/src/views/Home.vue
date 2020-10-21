@@ -5,7 +5,7 @@
       Hello,{{userName}}
     </div>
     <div class="content text-center">
-      <button type="button" class="btn btn-primary start" v-show="toggle">
+      <button type="button" class="btn btn-primary start" v-show="toggle" @click="start">
         START
       </button>
     </div>
@@ -152,6 +152,8 @@ export default {
         console.log("loginRes");
         console.log(loginRes);
         sessionStorage['token']=loginRes//用session儲存token值
+        sessionStorage["account"] = this.account
+
 
         this.toggle = !this.toggle;//開始按鈕的顯示//如果登入成功開始按鈕就會顯示
         this.$refs["my-modal"].hide();
@@ -182,6 +184,9 @@ export default {
     showModal() {
       this.$refs["my-modal"].show();
     },
+      start() {
+          this.$router.push("Waiting");
+      }
     // hideModal() {
     //   this.$refs["my-modal"].hide();
     // },
