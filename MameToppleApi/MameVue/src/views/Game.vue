@@ -27,7 +27,7 @@
 
                         <div class="players location-wrap m-auto">
                             <!-- #region 玩家1區域 -->
-                            <LocationBottom />
+                            <LocationBottom :cards="cardsData" />
                             <!-- #endregion 玩家1區域 -->
 
                             <!-- <div class="user-icon user-bottom"></div>
@@ -83,10 +83,24 @@ function signalRConnection(vm) {
             connection.on("GetDollsTower", function (dollsTower) {
                 // console.log(`${JSON.stringify(dollsTower)}`);
                 // $data.items = dollsTower;
-                vm.items = dollsTower;
+                // vm.items = dollsTower;
                 vm.dollsTowerData = dollsTower;
 
                 console.log(`${JSON.stringify(_dollsTower)}`);
+
+                // Binding();
+                // dollsTower = JSON.stringify(dollsTower);
+            });
+
+            connection.invoke("GetCards");
+
+            connection.on("GetCards", function (cards) {
+                // console.log(`${JSON.stringify(dollsTower)}`);
+                // $data.items = dollsTower;
+                // vm.items = dollsTower;
+                vm.cardsData = cards;
+
+                // console.log(`${JSON.stringify(cards)}`);
 
                 // Binding();
                 // dollsTower = JSON.stringify(dollsTower);
@@ -110,9 +124,10 @@ export default {
     },
     data() {
         return {
-            items: [],
+            // items: [],
             // dollsTowerData: dollsTower,
             dollsTowerData: [],
+            cardsData: [],
 
             //#region 測試資料
             // dollsTowerData: [

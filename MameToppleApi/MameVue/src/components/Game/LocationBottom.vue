@@ -1,26 +1,28 @@
 <template>
     <div class="location-bottom">
-        <div class="cards-panel"></div>
+        <div class="cards-panel">
+            <!-- <MameCards :cards="cards" class="w-100 h-100" /> -->
+            <MameCards :cards="cards" />
+        </div>
         <div class="user-avatar"></div>
     </div>
-
-    <!-- <div class="alert alert-warning" role="alert">
-        A simple warning alert—check it out!
-    </div> -->
 </template>
 
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
+import MameCards from "./MameCards.vue";
 
 export default {
+    props: ["cards"],
     data() {
         return {
-            userName: "",
+            // cardsData: cards,
         };
     },
     components: {
         // HelloWorld
+        MameCards,
     },
     methods: {
         handleLoginButtonClick() {
@@ -37,6 +39,7 @@ export default {
     width: 100%;
 }
 .cards-panel {
+    position: relative;
     background-color: rgba(255, 205, 255, 0.5);
     border-radius: 10px;
     width: 100%;
