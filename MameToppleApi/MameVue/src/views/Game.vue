@@ -4,30 +4,18 @@
             <div class="col-12 col-md-12 game-content text-center">
                 <div class="row">
                     <div class="col-2 col-md-2 players location-left">
-                        <div class="user-icon user-left"></div>
-                        <div class="cards-panel cards-panel-lr"></div>
+                        <!-- <div class="user-icon user-left"></div>
+                        <div class="cards-panel cards-panel-lr"></div> -->
                     </div>
                     <div class="col-8 col-md-8 center-content">
-                        <div class="players location-top m-auto">
+                        <div class="players location-wrap m-auto">
+                            <!-- #region 玩家2區域 -->
                             <LocationTop />
+                            <!-- #endregion 玩家2區域 -->
                         </div>
                         <div class="game-board">
                             <!-- #region mame-line 區域 -->
-                            <div class="mame-line">
-                                <!-- <div v-for="item in items" class="w-100 h-100"> -->
-                                <div
-                                    class="item w-100 h-100"
-                                    v-for="(item, index) in items"
-                                    :key="index"
-                                >
-                                    <div class="mame-tiki mame-tiki-1">
-                                        <img
-                                            v-bind:src="item.image"
-                                            v-bind:alt="item.name"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                            <MameLine :dolls="dollsTowerData" />
 
                             <!-- <div class="mame-line">
                                     <div class="mame-tiki mame-tiki-1"></div>
@@ -36,9 +24,14 @@
                                 </div> -->
                             <!-- #endregion mame-line 區域 -->
                         </div>
-                        <div class="players location-bottom m-auto">
-                            <div class="user-icon user-bottom"></div>
-                            <div class="cards-panel cards-panel-ud">
+
+                        <div class="players location-wrap m-auto">
+                            <!-- #region 玩家1區域 -->
+                            <LocationBottom />
+                            <!-- #endregion 玩家1區域 -->
+
+                            <!-- <div class="user-icon user-bottom"></div>
+                            <div class="cards-panel">
                                 <div class="mame-card">
                                     <div class="mame-card-wrapper">
                                         <div
@@ -49,12 +42,12 @@
                                         ></div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="col-2 col-md-2 players location-right">
-                        <div class="cards-panel cards-panel-lr"></div>
-                        <div class="user-icon user-right"></div>
+                        <!-- <div class="cards-panel cards-panel-lr"></div>
+                        <div class="user-icon user-right"></div> -->
                     </div>
                 </div>
             </div>
@@ -65,52 +58,91 @@
 
 <script>
 import LocationTop from "../components/Game/LocationTop.vue";
+import LocationBottom from "../components/Game/LocationBottom.vue";
+import MameLine from "../components/Game/MameLine.vue";
+
+// import signalR from "../@microsoft/signalr";
+const signalR = require("@microsoft/signalr");
+console.log(signalR);
 
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 
-var connection = new signalR.HubConnectionBuilder()
-    .withUrl("https://localhost:5001/mamehub", {
-        skipNegotiation: true,
-        transport: signalR.HttpTransportType.WebSockets,
-    })
-    .build();
-let _dollsTower = null;
-connection
-    .start()
-    .then(() => {
-        connection.invoke("GetDollsTower");
+function signalRConnection(vm) {
+    var connection = new signalR.HubConnectionBuilder()
+        .withUrl("https://localhost:44324/mamehub", {
+            skipNegotiation: true,
+            transport: signalR.HttpTransportType.WebSockets,
+        })
+        .build();
+    connection
+        .start()
+        .then(() => {
+            connection.invoke("GetDollsTower");
 
-        connection.on("GetDollsTower", function (dollsTower) {
-            console.log(`${JSON.stringify(dollsTower)}`);
-            _dollsTower = dollsTower;
-            Binding();
-            // dollsTower = JSON.stringify(dollsTower);
+            connection.on("GetDollsTower", function (dollsTower) {
+                // console.log(`${JSON.stringify(dollsTower)}`);
+                // $data.items = dollsTower;
+                vm.items = dollsTower;
+                vm.dollsTowerData = dollsTower;
+
+                console.log(`${JSON.stringify(_dollsTower)}`);
+
+                // Binding();
+                // dollsTower = JSON.stringify(dollsTower);
+            });
+        })
+        .catch(function (err) {
+            console.error(err.toString());
         });
-    })
-    .catch(function (err) {
-        console.error(err.toString());
-    });
+}
+
 //#endregion signalR
+// console.log(`${JSON.stringify(_dollsTower)}`);
 // console.log(`${JSON.stringify(_dollsTower)}`);
 
 export default {
     name: "MyGame",
+    created() {
+        let vm = this;
+        // console.log(vm);
+        signalRConnection(vm);
+    },
     data() {
         return {
-            items: [
-                { name: "sakura-goma" },
-                { image: "https://sandy.s-ul.eu/NHghYux2" },
-            ],
+            items: [],
+            // dollsTowerData: dollsTower,
+            dollsTowerData: [],
+
+            //#region 測試資料
+            // dollsTowerData: [
+            //     {
+            //         id: 4,
+            //         name: "Panda-goma",
+            //         image: "https://sandy.s-ul.eu/FqRRkn3Y",
+            //     },
+            // ],
+
+            // items: _dollsTower,
+            // items: [
+            //     {
+            //         id: 4,
+            //         name: "Panda-goma",
+            //         image: "https://sandy.s-ul.eu/FqRRkn3Y",
+            //     },
+            // ],
+            //#endregion 測試資料
         };
     },
     components: {
         LocationTop,
+        LocationBottom,
+        MameLine,
     },
     methods: {
-        handleLoginButtonClick() {
-            this.login();
-        },
+        // handleLoginButtonClick() {
+        //     this.login();
+        // },
     },
 };
 </script>
@@ -132,6 +164,30 @@ export default {
         background-size: cover;
         opacity: 0.1;
         z-index: -1;
+    }
+}
+.center-content {
+    display: flex;
+    flex-direction: column;
+
+    height: 100vh;
+    padding: 0;
+
+    .location-wrap {
+        width: 100%;
+        flex-grow: 1;
+        display: flex;
+        margin-top: 20px;
+        align-items: center;
+
+        justify-content: center;
+    }
+    .game-board {
+        flex-grow: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 100px 0;
     }
 }
 </style>

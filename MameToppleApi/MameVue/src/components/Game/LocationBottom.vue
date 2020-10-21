@@ -1,5 +1,5 @@
 <template>
-    <div class="location-top">
+    <div class="location-bottom">
         <div class="cards-panel"></div>
         <div class="user-avatar"></div>
     </div>
@@ -32,7 +32,7 @@ export default {
 
 
 <style lang="scss" scoped>
-.location-top {
+.location-bottom {
     display: flex;
     width: 100%;
 }
@@ -41,12 +41,11 @@ export default {
     border-radius: 10px;
     width: 100%;
     height: 150px;
-    position: relative;
 }
 
 .user-avatar {
     width: 178px;
     height: 150px;
-    background-image: url("../../assets/images/user-icon-left.png");
+    background-image: url("../../assets/images/user-icon-bottom.png");
 }
 </style>
