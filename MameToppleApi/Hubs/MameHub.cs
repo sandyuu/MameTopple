@@ -3,6 +3,7 @@ using MameToppleApi.Interfaces;
 using MameToppleApi.Models;
 using MameToppleApi.Models.ViewModels;
 using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,14 +50,21 @@ namespace MameToppleApi.Hubs
         public async Task PlayerJoin(string account)
         {
             player.Add(Context.ConnectionId, _gameService.GetPlayerInfo(account));
-            if(player.Count == 2)
-            {
-                foreach(var i in player)
-                {
-                    i.Value.IsPlaying = true;
-                }
-                await Clients.All.SendAsync("GameStart", player.Values.AsEnumerable());
-            }
+            //if(player.Count == 2)
+            //{
+            //    foreach(var i in player)
+            //    {
+            //        i.Value.IsPlaying = true;
+            //    }
+            //}
+            await Clients.All.SendAsync("SomeOneJoin", player.Values.AsQueryable().Where(x => x.IsPlaying == false));
+        }
+
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            await base.OnDisconnectedAsync(exception);
+            player.Remove(Context.ConnectionId);
+            await Clients.All.SendAsync("SomeOneLeave", player.Values.AsEnumerable());
         }
 
         public async Task GetDollsTower()

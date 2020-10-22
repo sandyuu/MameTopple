@@ -1,4 +1,5 @@
-﻿using MameToppleApi.Models;
+﻿using MameToppleApi.Interfaces;
+using MameToppleApi.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
