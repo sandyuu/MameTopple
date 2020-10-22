@@ -3,7 +3,7 @@ html {
 }
 
 body {
-  background-image: url("../images/ranking.png");
+  background-image: url("../../images/Ranking/ranking.png");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
@@ -82,7 +82,7 @@ body {
   height: 100%;
 }
 
-.ranking-container .ranking .player-container .player .player-card {
+.ranking-container .ranking .player-container .player .mission-card {
   width: 16vw;
   height: 20vw;
   background-color: white;
@@ -103,7 +103,7 @@ body {
   text-align: center;
 }
 
-.ranking-container .ranking .player-container .player .player-card .mame-tiki {
+.ranking-container .ranking .player-container .player .mission-card .mame-tiki {
   width: 85%;
   height: 28%;
   background-color: #d3fafa;
@@ -117,15 +117,15 @@ body {
   border-radius: 10%;
 }
 
-.ranking-container .ranking .player-container .player .player-card .mame-tiki .mame-tiki-img {
+.ranking-container .ranking .player-container .player .mission-card .mame-tiki .mame-tiki-img {
   width: 100%;
 }
 
-.ranking-container .ranking .player-container .player .player-card .mame-tiki .mame-tiki-img img {
+.ranking-container .ranking .player-container .player .mission-card .mame-tiki .mame-tiki-img img {
   width: 100%;
 }
 
-.ranking-container .ranking .player-container .player .player-card .mame-tiki .mame-tiki-name {
+.ranking-container .ranking .player-container .player .mission-card .mame-tiki .mame-tiki-name {
   width: 100%;
   padding: 0;
 }

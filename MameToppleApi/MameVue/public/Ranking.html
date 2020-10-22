@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RANKING</title>
+    <title>Ranking</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet"
@@ -33,12 +33,17 @@
                 <div class="player-container pt-5">
 
                     <div class="player d-inline-block ">
-                        <div class="player-card ">
-                            <div class="mame-tiki">
-                                <div class="mame-tiki-img col-6">
-                                    <img src="../src/assets/images/Ranking/Cherry-Blossom-goma.png" alt="" srcset="">
+                        <div class="mission-card">
+                            <div v-for="(item,index) in items" :key="index">
+                                <div class="mame-tiki">
+                                    <img v-bind:src="item.image" v-bind:alt="item.name" />
+                                    <div class="mame-tiki-img col-6">
+
+                                        <img src="../src/assets/images/Ranking/Cherry-Blossom-goma.png" alt=""  srcset=""> 
+
+                                    </div>
+                                    <div class="mame-tiki-name col-6">mame-tiki-name</div>
                                 </div>
-                                <div class="mame-tiki-name col-6">mame-tiki-name</div>
                             </div>
                             <div class="mame-tiki"></div>
                             <div class="mame-tiki"></div>
@@ -64,7 +69,7 @@
                         </div>
                     </div>
                     <div class="player text-center d-inline-block">
-                        <div class="player-card ">
+                        <div class="mission-card ">
                             <div class="mame-tiki"></div>
                             <div class="mame-tiki"></div>
                             <div class="mame-tiki"></div>
@@ -142,6 +147,7 @@
         </div>
     </div>
 
+    <script type="module" src="../src/assets/js/Ranking.js"></script>
 
 </body>
 
