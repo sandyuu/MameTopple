@@ -1,7 +1,7 @@
 <template>
     <!-- <div class="test">{{ cards }}</div> -->
     <div class="mame-card">
-        <div v-for="item in cards" class="w-100 h-100">
+        <div v-for="item in cards" v-bind:key="item.image" class="w-100 h-100">
             <div class="mame-card-wrapper">
                 <div
                     class="mame-card-side is-active"

@@ -86,8 +86,6 @@ function signalRConnection(vm) {
                 // vm.items = dollsTower;
                 vm.dollsTowerData = dollsTower;
 
-                console.log(`${JSON.stringify(_dollsTower)}`);
-
                 // Binding();
                 // dollsTower = JSON.stringify(dollsTower);
             });
