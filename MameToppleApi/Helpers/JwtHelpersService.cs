@@ -5,13 +5,14 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System;
 using System.Text;
+using MameToppleApi.Interfaces;
 
 namespace MameToppleApi.Helpers
 {
-    public class JwtHelpers
+    public class JwtHelpersService : IJwtHelpersService
     {
         private readonly IConfiguration configuration;
-        public JwtHelpers(IConfiguration _configuration)
+        public JwtHelpersService(IConfiguration _configuration)
         {
             configuration = _configuration;
         }

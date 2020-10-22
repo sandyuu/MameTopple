@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-namespace MameToppleApi.Interface
+namespace MameToppleApi.Interfaces
 {
     public interface IGameService
     {
