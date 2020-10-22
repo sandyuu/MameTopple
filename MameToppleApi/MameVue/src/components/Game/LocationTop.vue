@@ -1,27 +1,28 @@
 <template>
     <div class="location-top">
-        <div class="cards-panel"></div>
+        <div class="cards-panel">
+            <MameCardBack :cards="cards" />
+        </div>
         <div class="user-avatar"></div>
     </div>
-
-    <!-- <div class="alert alert-warning" role="alert">
-        A simple warning alert—check it out!
-    </div> -->
 </template>
 
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
+import MameCardBack from "../Game/MameCardBack.vue";
 
 export default {
+    prop: ["cards"],
     data() {
         return {
             userName: "",
         };
     },
     components: {
-        // HelloWorld
+        MameCardBack,
     },
+
     methods: {
         handleLoginButtonClick() {
             this.login();

@@ -1,6 +1,7 @@
 <template>
     <div class="mame-line">
-        <div v-for="item in dolls" class="w-100 h-100">
+        <!--eslint-disable-next-line-->
+        <div v-for="item in dolls" v-bind:key="item.image" class="w-100 h-100">
             <!-- <div
                                     class="item w-100 h-100"
                                     v-for="(item, index) in items"

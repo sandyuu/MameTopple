@@ -1,17 +1,15 @@
 <template>
     <!-- <div class="test">{{ cards }}</div> -->
     <div class="mame-card">
-        <div v-for="item in cards" class="w-100 h-100">
+        <div class="mame-card-wrapper">
+            <div class="mame-card-side is-active"></div>
+            <div class="mame-card-side mame-card-side-back"></div>
+        </div>
+        <!-- <div v-for="item in cards" class="w-100 h-100">
             <div class="mame-card-wrapper">
-                <div
-                    class="mame-card-side is-active"
-                    v-bind:style="{
-                        'background-image': 'url(' + item.image + ')',
-                    }"
-                ></div>
                 <div class="mame-card-side mame-card-side-back"></div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
@@ -56,18 +54,6 @@ $card-transition-delay-time: 1s;
     }
 }
 
-@keyframes rotate-inverse {
-    0% {
-        transform: rotateY(180deg);
-    }
-    70% {
-        transform: rotateY(-20deg);
-    }
-    100% {
-        transform: rotateY(0);
-    }
-}
-
 .mame-card {
     width: 100%;
     height: 100%;
@@ -86,8 +72,6 @@ $card-transition-delay-time: 1s;
         width: 120px;
         height: 180px;
         transform-style: preserve-3d;
-        animation: rotate-inverse $card-transition-time
-            $card-transition-delay-time linear both;
         margin-left: 10px;
         position: absolute;
         bottom: 6px;
@@ -105,6 +89,8 @@ $card-transition-delay-time: 1s;
 
             width: 100%;
             height: 100%;
+            background-image: url("../../assets/images/mame_card_back.png");
+
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
