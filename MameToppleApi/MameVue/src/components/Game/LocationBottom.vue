@@ -2,7 +2,14 @@
     <div class="location-bottom">
         <div class="cards-panel">
             <!-- <MameCards :cards="cards" class="w-100 h-100" /> -->
-            <MameCards :cards="cards" />
+            <!-- <MameCards :cards="cards" /> -->
+            <MameCards
+                :cards="cards"
+                :dolls="dolls"
+                :signalRConnection="signalRConnection"
+                v-on:CardDisDolls="DisDolls"
+                v-on:CardChooseDolls="ChooseDolls"
+            />
         </div>
         <div class="user-avatar"></div>
     </div>
@@ -13,8 +20,31 @@
 // import HelloWorld from '@/components/HelloWorld.vue'
 import MameCards from "./MameCards.vue";
 
+function getDolls(dolls) {
+    var str = "";
+    var counts = 0;
+    for (let prop in dolls) {
+        if (typeof dolls[prop] === "object") {
+            for (let current_prop in dolls[prop]) {
+                if (current_prop == "name") {
+                    str += `${dolls[prop][current_prop]}, `;
+                    counts++;
+                }
+                // console.log(`${current_prop}: ${dolls[prop][current_prop]}`);
+            }
+        } else {
+            console.log(`${prop}: ${dolls[prop]}`); //person[prop] 相當於 person['Name']
+        }
+    }
+    console.log(`${str} | 一共 ${counts} 只 goma`);
+}
+
 export default {
-    props: ["cards"],
+    // props: ["cards", "signalRConnection"],
+    props: ["cards", "signalRConnection", "dolls"],
+
+    // props: ["cards"],
+
     data() {
         return {
             // cardsData: cards,
@@ -25,8 +55,11 @@ export default {
         MameCards,
     },
     methods: {
-        handleLoginButtonClick() {
-            this.login();
+        DisDolls: function (dolls, cardName) {
+            this.$emit("BottomDisDolls", dolls, cardName);
+        },
+        ChooseDolls: function (cardName) {
+            this.$emit("BottomChooseDolls", cardName);
         },
     },
 };

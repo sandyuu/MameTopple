@@ -10,39 +10,29 @@
                     <div class="col-8 col-md-8 center-content">
                         <div class="players location-wrap m-auto">
                             <!-- #region 玩家2區域 -->
-                            <LocationTop />
+                            <LocationTop :cards="cardsData" />
                             <!-- #endregion 玩家2區域 -->
                         </div>
                         <div class="game-board">
                             <!-- #region mame-line 區域 -->
-                            <MameLine :dolls="dollsTowerData" />
-
-                            <!-- <div class="mame-line">
-                                    <div class="mame-tiki mame-tiki-1"></div>
-                                    <div class="mame-tiki mame-tiki-2"></div>
-                                    <div class="mame-tiki mame-tiki-3"></div>
-                                </div> -->
-                            <!-- #endregion mame-line 區域 -->
+                            <MameLine
+                                :dolls="dollsTowerData"
+                                :cardName="cardName"
+                                :signalRConnection="signalRConnectionInstance"
+                                v-on:MameLineEditDolls="EditDolls"
+                            />
                         </div>
 
                         <div class="players location-wrap m-auto">
                             <!-- #region 玩家1區域 -->
-                            <LocationBottom :cards="cardsData" />
+                            <LocationBottom
+                                :cards="cardsData"
+                                :signalRConnection="signalRConnectionInstance"
+                                :dolls="dollsTowerData"
+                                v-on:BottomDisDolls="DisDolls"
+                                v-on:BottomChooseDolls="ChooseDolls"
+                            />
                             <!-- #endregion 玩家1區域 -->
-
-                            <!-- <div class="user-icon user-bottom"></div>
-                            <div class="cards-panel">
-                                <div class="mame-card">
-                                    <div class="mame-card-wrapper">
-                                        <div
-                                            class="mame-card-side is-active"
-                                        ></div>
-                                        <div
-                                            class="mame-card-side mame-card-side-back"
-                                        ></div>
-                                    </div>
-                                </div>
-                            </div> -->
                         </div>
                     </div>
                     <div class="col-2 col-md-2 players location-right">
@@ -61,9 +51,26 @@ import LocationTop from "../components/Game/LocationTop.vue";
 import LocationBottom from "../components/Game/LocationBottom.vue";
 import MameLine from "../components/Game/MameLine.vue";
 
+function getDolls(dolls) {
+    var str = "";
+    var counts = 0;
+    for (let prop in dolls) {
+        if (typeof dolls[prop] === "object") {
+            for (let current_prop in dolls[prop]) {
+                if (current_prop == "name") {
+                    str += `${dolls[prop][current_prop]}, `;
+                    counts++;
+                }
+            }
+        } else {
+            console.log(`${prop}: ${dolls[prop]}`);
+        }
+    }
+    console.log(`${str} | 一共 ${counts} 只 goma`);
+}
 // import signalR from "../@microsoft/signalr";
 const signalR = require("@microsoft/signalr");
-console.log(signalR);
+// console.log(signalR);
 
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
@@ -75,43 +82,29 @@ function signalRConnection(vm) {
             transport: signalR.HttpTransportType.WebSockets,
         })
         .build();
+    connection.serverTimeoutInMilliseconds = 1200000;
+
     connection
         .start()
         .then(() => {
             connection.invoke("GetDollsTower");
-
             connection.on("GetDollsTower", function (dollsTower) {
-                // console.log(`${JSON.stringify(dollsTower)}`);
-                // $data.items = dollsTower;
-                // vm.items = dollsTower;
                 vm.dollsTowerData = dollsTower;
-
-                // Binding();
-                // dollsTower = JSON.stringify(dollsTower);
             });
 
             connection.invoke("GetCards");
 
             connection.on("GetCards", function (cards) {
-                // console.log(`${JSON.stringify(dollsTower)}`);
-                // $data.items = dollsTower;
-                // vm.items = dollsTower;
                 vm.cardsData = cards;
-
-                // console.log(`${JSON.stringify(cards)}`);
-
-                // Binding();
-                // dollsTower = JSON.stringify(dollsTower);
             });
+
+            vm.signalRConnectionInstance = connection;
         })
         .catch(function (err) {
             console.error(err.toString());
         });
 }
-
 //#endregion signalR
-// console.log(`${JSON.stringify(_dollsTower)}`);
-// console.log(`${JSON.stringify(_dollsTower)}`);
 
 export default {
     name: "MyGame",
@@ -122,29 +115,10 @@ export default {
     },
     data() {
         return {
-            // items: [],
-            // dollsTowerData: dollsTower,
             dollsTowerData: [],
             cardsData: [],
-
-            //#region 測試資料
-            // dollsTowerData: [
-            //     {
-            //         id: 4,
-            //         name: "Panda-goma",
-            //         image: "https://sandy.s-ul.eu/FqRRkn3Y",
-            //     },
-            // ],
-
-            // items: _dollsTower,
-            // items: [
-            //     {
-            //         id: 4,
-            //         name: "Panda-goma",
-            //         image: "https://sandy.s-ul.eu/FqRRkn3Y",
-            //     },
-            // ],
-            //#endregion 測試資料
+            cardName: [],
+            signalRConnectionInstance: [],
         };
     },
     components: {
@@ -153,9 +127,29 @@ export default {
         MameLine,
     },
     methods: {
-        // handleLoginButtonClick() {
-        //     this.login();
-        // },
+        EditDolls: function (dolls) {
+            this.dollsTowerData = dolls;
+            // getDolls(dolls);
+        },
+        DisDolls: function (dolls, cardName) {
+            this.dollsTowerData = dolls;
+
+            this.RemoveTheCard(cardName);
+        },
+        ChooseDolls: function (cardName) {
+            this.cardName = cardName;
+            // console.log(`現在使用 ${this.cardName} 卡片`);
+        },
+        RemoveTheCard: function (cardName) {
+            //移除使用過的卡片
+            var card_index = -1;
+            for (var item in this.cardsData) {
+                if (item.name != cardName) {
+                    card_index++;
+                }
+            }
+            this.cardsData.splice(card_index, 1);
+        },
     },
 };
 </script>

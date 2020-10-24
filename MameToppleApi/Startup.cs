@@ -113,7 +113,7 @@ namespace MameToppleApi
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
-            //註冊JWT  
+            //註冊JWT
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
                 // 當驗證失敗時，回應標頭會包含 WWW-Authenticate 標頭，這裡會顯示失敗的詳細錯誤原因
@@ -173,15 +173,15 @@ namespace MameToppleApi
             });
 
             //啟用中介軟體開啟Vue頁面
-            app.UseSpaStaticFiles();
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "MameVue";
-                if (env.IsDevelopment())
-                {
-                    spa.UseVueDevelopmentServer();
-                }
-            });
+            //app.UseSpaStaticFiles();
+            //app.UseSpa(spa =>
+            //{
+            //    spa.Options.SourcePath = "MameVue";
+            //    if (env.IsDevelopment())
+            //    {
+            //        spa.UseVueDevelopmentServer();
+            //    }
+            //});
 
             //啟用中介軟體提供swagger - ui(HTML, JS, CSS, etc.),
             // 指定 Swagger JSON endpoint.

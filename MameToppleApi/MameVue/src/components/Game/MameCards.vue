@@ -1,8 +1,9 @@
 <template>
     <!-- <div class="test">{{ cards }}</div> -->
     <div class="mame-card">
+        <!-- <div>{{ signalRConnection }}</div> -->
         <div v-for="item in cards" v-bind:key="item.image" class="w-100 h-100">
-            <div class="mame-card-wrapper">
+            <div class="mame-card-wrapper" @click="selectCard(item)">
                 <div
                     class="mame-card-side is-active"
                     v-bind:style="{
@@ -18,23 +19,83 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
+let _newdolls = null;
+function getDolls(dolls) {
+    if (dolls == null) {
+        return;
+    }
+    var str = "";
+    var counts = 0;
+    for (let prop in dolls) {
+        if (typeof dolls[prop] === "object") {
+            for (let current_prop in dolls[prop]) {
+                if (current_prop == "name") {
+                    str += `${dolls[prop][current_prop]}, `;
+                    counts++;
+                }
+                // console.log(`${current_prop}: ${dolls[prop][current_prop]}`);
+            }
+        } else {
+            console.log(`${prop}: ${dolls[prop]}`); //person[prop] 相當於 person['Name']
+        }
+    }
+    console.log(`${str} | 一共 ${counts} 只 goma`);
+}
 
 export default {
-    created() {},
+    props: ["cards", "signalRConnection", "dolls"],
+    created() {
+        // let vm = this;
+        this.newdolls = this.dolls;
+        console.log("建立");
+    },
     data() {
         return {
             // userName: "",
             items: [],
         };
     },
-    props: ["cards"],
+
     components: {
         // HelloWorld
     },
     methods: {
-        // handleLoginButtonClick() {
-        //     this.login();
-        // },
+        selectCard: function (item) {
+            let cardName;
+            let vm = this;
+            cardName = item.name;
+            // console.log(`列出全部 ${JSON.stringify(this.cards)}`);
+            // console.log(`before DOLLS`);
+            if (this.dolls.length == 0) {
+                return;
+            }
+            if (_newdolls == null) {
+                _newdolls = this.dolls;
+            }
+
+            // getDolls(_newdolls);
+
+            // console.log(`現在使用 ${cardName} 卡片`);
+
+            this.signalRConnection.invoke("UseCard", _newdolls, cardName);
+            this.signalRConnection.off("UseCard", null);
+            this.signalRConnection.on("UseCard", function (new_dolls) {
+                if (cardName == "Discard") {
+                    _newdolls = new_dolls;
+
+                    vm.$emit("CardDisDolls", _newdolls, cardName);
+                }
+                if (cardName == "DropDown") {
+                    vm.$emit("CardChooseDolls", cardName);
+                }
+            });
+
+            // this.$nextTick(function () {
+            //     console.log("離開後");
+            //     getDolls(null);
+            // });
+            // getDolls(_newdolls);
+        },
     },
 };
 </script>

@@ -7,7 +7,7 @@
                                     v-for="(item, index) in items"
                                     :key="index"
                                 > -->
-            <div class="mame-tiki">
+            <div class="mame-tiki" @click="selectDoll(item)">
                 <div
                     class="mame-tiki-img w-100 h-100"
                     v-bind:style="{
@@ -23,6 +23,31 @@
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 
+function getDolls(dolls) {
+    var str = "";
+    var counts = 0;
+    // console.log(dolls);
+    for (let prop of dolls) {
+        // console.log(`${prop}: ${dolls[prop]}`);
+        str += `${prop.id}, `;
+    }
+    console.log(str);
+
+    // for (let prop in dolls) {
+    //     if (typeof dolls[prop] === "object") {
+    //         for (let current_prop in dolls[prop]) {
+    //             if (current_prop == "id") {
+    //                 str += `${dolls[prop][current_prop]}, `;
+    //                 counts++;
+    //             }
+    //         }
+    //     } else {
+    //         console.log(`${prop}: ${dolls[prop]}`);
+    //     }
+    // }
+    // console.log(`${str} | 一共 ${counts} 只 goma`);
+}
+
 export default {
     created() {},
     data() {
@@ -31,14 +56,35 @@ export default {
             items: [],
         };
     },
-    props: ["dolls"],
+    props: ["dolls", "cardName", "signalRConnection"],
     components: {
         // HelloWorld
     },
     methods: {
-        // handleLoginButtonClick() {
-        //     this.login();
-        // },
+        selectDoll: function (item) {
+            let vm = this;
+            let selected_doll = item;
+            // console.log(selected_doll);
+
+            if (this.cardName == "DropDown") {
+                // console.log(
+                //     `準備DropDown，我想移動編號 ${selected_doll.id} 到最右邊`
+                // );
+                console.log("before");
+                getDolls(this.dolls);
+                // console.log(`現在使用 ${this.cardName} 卡片`);
+
+                this.signalRConnection.invoke("DollChosen", selected_doll);
+
+                this.signalRConnection.off("DollChosen", null);
+                this.signalRConnection.on("DollChosen", function (new_dolls) {
+                    console.log("_after");
+                    getDolls(new_dolls);
+
+                    vm.$emit("MameLineEditDolls", new_dolls);
+                });
+            }
+        },
     },
 };
 </script>
@@ -65,6 +111,14 @@ export default {
             background-position: center;
             background-repeat: no-repeat;
             background-size: auto 95%;
+        }
+        &:hover {
+            border: 1px solid #ffef91;
+            box-shadow: 0 0 5px 5px #ffee8bbb;
+        }
+        &:active {
+            border: 1px solid #91ffbb;
+            box-shadow: 0 0 5px 5px #91ffbbbb;
         }
     }
     & :nth-child(99) {
