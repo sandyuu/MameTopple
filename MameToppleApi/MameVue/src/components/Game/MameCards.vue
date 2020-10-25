@@ -3,7 +3,7 @@
     <div class="mame-card">
         <!-- <div>{{ signalRConnection }}</div> -->
         <div v-for="item in cards" v-bind:key="item.image" class="w-100 h-100">
-            <div class="mame-card-wrapper" @click="selectCard(item)">
+            <div class="mame-card-wrapper" v-on:click="selectCard(item)">
                 <div
                     class="mame-card-side is-active"
                     v-bind:style="{
@@ -75,17 +75,20 @@ export default {
 
             // getDolls(_newdolls);
 
-            // console.log(`現在使用 ${cardName} 卡片`);
+            console.log(`現在使用 ${cardName} 卡片`);
 
             this.signalRConnection.invoke("UseCard", _newdolls, cardName);
-            this.signalRConnection.off("UseCard", null);
+            // this.signalRConnection.off("UseCard", null);
+
             this.signalRConnection.on("UseCard", function (new_dolls) {
                 if (cardName == "Discard") {
                     _newdolls = new_dolls;
 
+                    this.off("UseCard", null);
                     vm.$emit("CardDisDolls", _newdolls, cardName);
                 }
                 if (cardName == "DropDown") {
+                    this.off("UseCard", null);
                     vm.$emit("CardChooseDolls", cardName);
                 }
             });
@@ -101,7 +104,7 @@ export default {
 </script>
 
 
-<style lang="scss" >
+<style lang="scss" scoped>
 $card-transition-time: 1s;
 $card-transition-delay-time: 1s;
 

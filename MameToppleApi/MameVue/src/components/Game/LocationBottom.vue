@@ -1,12 +1,12 @@
 <template>
     <div class="location-bottom">
         <div class="cards-panel">
-            <!-- <MameCards :cards="cards" class="w-100 h-100" /> -->
-            <!-- <MameCards :cards="cards" /> -->
+            <!-- <MameCards v-bind:cards="cards" class="w-100 h-100" /> -->
+            <!-- <MameCards v-bind:cards="cards" /> -->
             <MameCards
-                :cards="cards"
-                :dolls="dolls"
-                :signalRConnection="signalRConnection"
+                v-bind:cards="cards"
+                v-bind:dolls="dolls"
+                v-bind:signalRConnection="signalRConnection"
                 v-on:CardDisDolls="DisDolls"
                 v-on:CardChooseDolls="ChooseDolls"
             />

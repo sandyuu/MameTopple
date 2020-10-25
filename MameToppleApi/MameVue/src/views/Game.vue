@@ -10,25 +10,29 @@
                     <div class="col-8 col-md-8 center-content">
                         <div class="players location-wrap m-auto">
                             <!-- #region 玩家2區域 -->
-                            <LocationTop :cards="cardsData" />
+                            <LocationTop v-bind:cards="cardsData" />
                             <!-- #endregion 玩家2區域 -->
                         </div>
                         <div class="game-board">
                             <!-- #region mame-line 區域 -->
                             <MameLine
-                                :dolls="dollsTowerData"
-                                :cardName="cardName"
-                                :signalRConnection="signalRConnectionInstance"
-                                v-on:MameLineEditDolls="EditDolls"
+                                v-bind:dolls="dollsTowerData"
+                                v-bind:cardName="cardName"
+                                v-bind:signalRConnection="
+                                    signalRConnectionInstance
+                                "
+                                v-on:MameLineDropDownDolls="DropDownDolls"
                             />
                         </div>
 
                         <div class="players location-wrap m-auto">
                             <!-- #region 玩家1區域 -->
                             <LocationBottom
-                                :cards="cardsData"
-                                :signalRConnection="signalRConnectionInstance"
-                                :dolls="dollsTowerData"
+                                v-bind:cards="cardsData"
+                                v-bind:signalRConnection="
+                                    signalRConnectionInstance
+                                "
+                                v-bind:dolls="dollsTowerData"
                                 v-on:BottomDisDolls="DisDolls"
                                 v-on:BottomChooseDolls="ChooseDolls"
                             />
@@ -127,14 +131,20 @@ export default {
         MameLine,
     },
     methods: {
-        EditDolls: function (dolls) {
+        DropDownDolls: function (dolls, cardName) {
             this.dollsTowerData = dolls;
+            this.RemoveTheCard(cardName);
+            // this.cardName = "";
+            this.cardName = "";
+
             // getDolls(dolls);
         },
         DisDolls: function (dolls, cardName) {
             this.dollsTowerData = dolls;
 
             this.RemoveTheCard(cardName);
+
+            this.cardName = "";
         },
         ChooseDolls: function (cardName) {
             this.cardName = cardName;
@@ -142,12 +152,30 @@ export default {
         },
         RemoveTheCard: function (cardName) {
             //移除使用過的卡片
-            var card_index = -1;
-            for (var item in this.cardsData) {
-                if (item.name != cardName) {
-                    card_index++;
+            var str = "";
+            var card_index = 0;
+            card_index = 0;
+            console.log(`card_index: ${card_index}`);
+
+            console.log(this.cardsData);
+
+            for (var item of this.cardsData) {
+                str += `${item.name}, `;
+                if (item.name == cardName) {
+                    console.log(`在${card_index}終於找到 ${cardName}`);
+
+                    break;
                 }
+                console.log(`在${card_index}沒找到 ${cardName}`);
+
+                card_index++;
             }
+            console.log(`目前卡片列表: ${str} `);
+
+            console.log(
+                `我要從Card索引值 ${card_index} 開始，刪除一張卡片 ${cardName}`
+            );
+
             this.cardsData.splice(card_index, 1);
         },
     },

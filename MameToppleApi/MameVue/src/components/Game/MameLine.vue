@@ -1,13 +1,12 @@
 <template>
     <div class="mame-line">
-        <!--eslint-disable-next-line-->
         <div v-for="item in dolls" v-bind:key="item.image" class="w-100 h-100">
             <!-- <div
                                     class="item w-100 h-100"
                                     v-for="(item, index) in items"
                                     :key="index"
                                 > -->
-            <div class="mame-tiki" @click="selectDoll(item)">
+            <div class="mame-tiki" v-on:click="selectDoll(item)">
                 <div
                     class="mame-tiki-img w-100 h-100"
                     v-bind:style="{
@@ -32,20 +31,6 @@ function getDolls(dolls) {
         str += `${prop.id}, `;
     }
     console.log(str);
-
-    // for (let prop in dolls) {
-    //     if (typeof dolls[prop] === "object") {
-    //         for (let current_prop in dolls[prop]) {
-    //             if (current_prop == "id") {
-    //                 str += `${dolls[prop][current_prop]}, `;
-    //                 counts++;
-    //             }
-    //         }
-    //     } else {
-    //         console.log(`${prop}: ${dolls[prop]}`);
-    //     }
-    // }
-    // console.log(`${str} | 一共 ${counts} 只 goma`);
 }
 
 export default {
@@ -62,26 +47,31 @@ export default {
     },
     methods: {
         selectDoll: function (item) {
+            if (this.cardName == "") {
+                return;
+            }
             let vm = this;
             let selected_doll = item;
             // console.log(selected_doll);
 
             if (this.cardName == "DropDown") {
-                // console.log(
-                //     `準備DropDown，我想移動編號 ${selected_doll.id} 到最右邊`
-                // );
+                console.log(
+                    `準備DropDown，我想移動編號 ${selected_doll.id} 到最右邊`
+                );
                 console.log("before");
                 getDolls(this.dolls);
                 // console.log(`現在使用 ${this.cardName} 卡片`);
 
                 this.signalRConnection.invoke("DollChosen", selected_doll);
 
-                this.signalRConnection.off("DollChosen", null);
+                // this.signalRConnection.off("DollChosen", null);
                 this.signalRConnection.on("DollChosen", function (new_dolls) {
                     console.log("_after");
                     getDolls(new_dolls);
+                    console.log(`準備回傳卡片名 ${vm.cardName}`);
+                    this.off("DollChosen", null);
 
-                    vm.$emit("MameLineEditDolls", new_dolls);
+                    vm.$emit("MameLineDropDownDolls", new_dolls, vm.cardName);
                 });
             }
         },
