@@ -22,6 +22,7 @@
                                     signalRConnectionInstance
                                 "
                                 v-on:MameLineDropDownDolls="DropDownDolls"
+                                v-on:MameLineMoveDolls="MoveDolls"
                             />
                         </div>
 
@@ -122,7 +123,7 @@ export default {
             dollsTowerData: [],
             cardsData: [],
             cardName: [],
-            signalRConnectionInstance: [],
+            signalRConnectionInstance: {},
         };
     },
     components: {
@@ -132,6 +133,14 @@ export default {
     },
     methods: {
         DropDownDolls: function (dolls, cardName) {
+            this.dollsTowerData = dolls;
+            this.RemoveTheCard(cardName);
+            // this.cardName = "";
+            this.cardName = "";
+
+            // getDolls(dolls);
+        },
+        MoveDolls: function (dolls, cardName) {
             this.dollsTowerData = dolls;
             this.RemoveTheCard(cardName);
             // this.cardName = "";
@@ -155,26 +164,26 @@ export default {
             var str = "";
             var card_index = 0;
             card_index = 0;
-            console.log(`card_index: ${card_index}`);
+            // console.log(`card_index: ${card_index}`);
 
             console.log(this.cardsData);
 
             for (var item of this.cardsData) {
                 str += `${item.name}, `;
                 if (item.name == cardName) {
-                    console.log(`在${card_index}終於找到 ${cardName}`);
+                    // console.log(`在${card_index}終於找到 ${cardName}`);
 
                     break;
                 }
-                console.log(`在${card_index}沒找到 ${cardName}`);
+                // console.log(`在${card_index}沒找到 ${cardName}`);
 
                 card_index++;
             }
-            console.log(`目前卡片列表: ${str} `);
+            // console.log(`目前卡片列表: ${str} `);
 
-            console.log(
-                `我要從Card索引值 ${card_index} 開始，刪除一張卡片 ${cardName}`
-            );
+            // console.log(
+            //     `我要從Card索引值 ${card_index} 開始，刪除一張卡片 ${cardName}`
+            // );
 
             this.cardsData.splice(card_index, 1);
         },
@@ -184,6 +193,8 @@ export default {
 
 <style lang="scss">
 .game-bg {
+    -webkit-user-select: none;
+    -moz-user-select: none;
     position: relative;
     &:after {
         content: "";
