@@ -2,6 +2,7 @@
     <div class="location-top">
         <div class="cards-panel">
             <MameCardBack :cards="cards" />
+            <MameCardBack />
         </div>
         <div class="user-avatar"></div>
     </div>
@@ -13,7 +14,7 @@
 import MameCardBack from "../Game/MameCardBack.vue";
 
 export default {
-    prop: ["cards"],
+    props: ["cards"],
     data() {
         return {
             userName: "",

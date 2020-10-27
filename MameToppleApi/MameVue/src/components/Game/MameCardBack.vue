@@ -1,15 +1,12 @@
 <template>
     <!-- <div class="test">{{ cards }}</div> -->
     <div class="mame-card">
-        <div class="mame-card-wrapper">
-            <div class="mame-card-side is-active"></div>
-            <div class="mame-card-side mame-card-side-back"></div>
-        </div>
-        <!-- <div v-for="item in cards" class="w-100 h-100">
+        <div v-for="item in cards" :key="item.id" class="w-100 h-100">
             <div class="mame-card-wrapper">
+                <div class="mame-card-side is-active"></div>
                 <div class="mame-card-side mame-card-side-back"></div>
             </div>
-        </div> -->
+        </div>
     </div>
 </template>
 
@@ -29,16 +26,12 @@ export default {
     components: {
         // HelloWorld
     },
-    methods: {
-        // handleLoginButtonClick() {
-        //     this.login();
-        // },
-    },
+    methods: {},
 };
 </script>
 
 
-<style lang="scss" >
+<style lang="scss" scoped>
 $card-transition-time: 1s;
 $card-transition-delay-time: 1s;
 
@@ -51,6 +44,18 @@ $card-transition-delay-time: 1s;
     }
     100% {
         transform: rotateY(180deg);
+    }
+}
+
+@keyframes rotate-inverse {
+    0% {
+        transform: rotateY(180deg);
+    }
+    70% {
+        transform: rotateY(-20deg);
+    }
+    100% {
+        transform: rotateY(0);
     }
 }
 
@@ -72,6 +77,8 @@ $card-transition-delay-time: 1s;
         width: 120px;
         height: 180px;
         transform-style: preserve-3d;
+        // animation: rotate-inverse $card-transition-time
+        //     $card-transition-delay-time linear both;
         margin-left: 10px;
         position: absolute;
         bottom: 6px;
@@ -81,6 +88,7 @@ $card-transition-delay-time: 1s;
             bottom: 0;
             width: 100%;
             height: 100%;
+            background-image: url("../../assets/images/mame_card_back.png");
 
             content: "";
             display: block;
@@ -89,8 +97,6 @@ $card-transition-delay-time: 1s;
 
             width: 100%;
             height: 100%;
-            background-image: url("../../assets/images/mame_card_back.png");
-
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
@@ -102,18 +108,18 @@ $card-transition-delay-time: 1s;
                 position: static;
             }
 
-            &:hover {
-                position: absolute;
+            // &:hover {
+            //     position: absolute;
 
-                border: 1px solid #ffef91;
-                // box-shadow: 0 0 0 5px #ffee8b9d;
-                box-shadow: 0 0 5px 5px #ffee8bbb;
-                filter: drop-shadow(6px 7px 4px rgba(0, 0, 0, 0.3));
+            //     border: 1px solid #ffef91;
+            //     // box-shadow: 0 0 0 5px #ffee8b9d;
+            //     box-shadow: 0 0 5px 5px #ffee8bbb;
+            //     filter: drop-shadow(6px 7px 4px rgba(0, 0, 0, 0.3));
 
-                width: 110%;
-                height: 110%;
-                top: -30px;
-            }
+            //     width: 110%;
+            //     height: 110%;
+            //     top: -30px;
+            // }
         }
 
         .mame-card-side-back {
@@ -125,7 +131,7 @@ $card-transition-delay-time: 1s;
                 display: block;
                 position: absolute;
                 bottom: 0;
-                background-image: url("../../assets/images/mame_card_back.png");
+                // background-image: url("../../assets/images/mame_card_back.png");
                 border-radius: 10px;
 
                 width: 100%;
