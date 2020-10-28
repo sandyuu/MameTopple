@@ -1,29 +1,25 @@
 <template>
-    <div class="home">
-        <div class="title">MAME TOPPLE</div>
-        <div class="userName">Hello,{{ userName }}</div>
-        <div class="content text-center">
-            <a href="./Game"
-                ><button
-                    type="button"
-                    class="btn btn-primary start"
-                    v-show="toggle"
-                >
-                    START
-                </button></a
-            >
-        </div>
-        <div>
-            <b-modal
-                ref="my-modal"
-                hide-footer
-                centered
-                hide-header
-                no-close-on-backdrop
-            >
-                <!-- no-close-on-backdrop -->
-                <div class="d-block text-center">
-                    <!-- <b-card no-body>
+  <div class="home">
+    <div class="title">MAME TOPPLE</div>
+    <div class="userName">
+      Hello,{{userName}}
+    </div>
+    <div class="content text-center">
+      <button type="button" class="btn btn-primary start" v-show="toggle" @click="start">
+        START
+      </button>
+    </div>
+    <div>
+      <b-modal
+        ref="my-modal"
+        hide-footer
+        centered
+        hide-header
+        no-close-on-backdrop
+      >
+        <!-- no-close-on-backdrop -->
+        <div class="d-block text-center">
+          <!-- <b-card no-body>
           <b-tabs content-class="mt-3" align="center" pills card >
             <b-tab title="First" active><p>I'm the first tab</p></b-tab>
             <b-tab title="Second"><p>I'm the second tab</p></b-tab>
@@ -155,13 +151,12 @@ export default {
                 account: this.account,
                 password: this.password,
             };
-
-            try {
-                var loginRes = await LoginPageService.login1(payload); //回傳token
-                console.log("loginRes");
-                console.log(loginRes);
-                sessionStorage["token"] = loginRes; //用session儲存token值
-
+      try {
+        var loginRes = await LoginPageService.login1(payload);//回傳token
+        console.log("loginRes");
+        console.log(loginRes);
+        sessionStorage['token']=loginRes//用session儲存token值
+        sessionStorage["account"] = this.account
                 this.toggle = !this.toggle; //開始按鈕的顯示//如果登入成功開始按鈕就會顯示
                 this.$refs["my-modal"].hide();
 
@@ -198,6 +193,16 @@ export default {
     mounted() {
         this.showModal();
     },
+      start() {
+          this.$router.push("Waiting");
+      }
+    // hideModal() {
+    //   this.$refs["my-modal"].hide();
+    // },
+  },
+  mounted() {
+    this.showModal();
+  },
 };
 </script>
 <style scoped >
