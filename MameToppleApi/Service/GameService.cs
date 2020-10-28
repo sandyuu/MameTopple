@@ -1,6 +1,7 @@
 using MameToppleApi.Interfaces;
 using MameToppleApi.Models;
 using MameToppleApi.Models.ViewModels;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace MameToppleApi.Service
                 IsActive = false,
                 IsPlaying = false,
                 Score = 0,
-                SPCard = _cardService.GetAllCards().ToList()
+                SPCard = null
             };
         }
 

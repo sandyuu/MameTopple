@@ -50,14 +50,14 @@ namespace MameToppleApi.Hubs
         public async Task PlayerJoin(string account)
         {
             player.Add(Context.ConnectionId, _gameService.GetPlayerInfo(account));
-            //if(player.Count == 2)
-            //{
-            //    foreach(var i in player)
-            //    {
-            //        i.Value.IsPlaying = true;
-            //    }
-            //}
             await Clients.All.SendAsync("SomeOneJoin", player.Values.AsQueryable().Where(x => x.IsPlaying == false));
+            if (player.Count == 2)
+            {
+                foreach (var i in player)
+                {
+                    i.Value.IsPlaying = true;
+                }
+            }
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
@@ -107,6 +107,12 @@ namespace MameToppleApi.Hubs
             }
 
             await Clients.Caller.SendAsync("GetOtherPlayerInfo", opponents);
+        }
+
+        public async Task WhoIsActive(int roundNum)
+        {
+            var nickName = player.ElementAt((roundNum + 1) % 2).Value.Nickname;
+            await Clients.All.SendAsync("WhoIsActive", nickName);
         }
 
         public async Task UseCard(List<Doll> dolls, string cardName)
