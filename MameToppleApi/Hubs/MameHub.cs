@@ -57,6 +57,7 @@ namespace MameToppleApi.Hubs
                 {
                     i.Value.IsPlaying = true;
                 }
+                await Clients.All.SendAsync("GameStart");
             }
         }
 
