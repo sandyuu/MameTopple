@@ -16,22 +16,31 @@ namespace MameToppleApi
     {
         public static void Main(string[] args)
         {
-            NLogBuilder.ConfigureNLog("Nlog.config").GetCurrentClassLogger();
-            CreateHostBuilder(args).Build().Run();
+            var logger = NLogBuilder.ConfigureNLog("NLog.config").GetCurrentClassLogger();
+            try
+            {
+                CreateHostBuilder(args).Build().Run();
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Get Error.");
+                throw;
+            }
+            finally
+            {
+                NLog.LogManager.Shutdown();
+            }
+
+            // NLogBuilder.ConfigureNLog("Nlog.config").GetCurrentClassLogger();
+            // CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                .ConfigureLogging(logging =>
-                {
-                    logging.ClearProviders();
-                    logging.SetMinimumLevel(LogLevel.Trace);
-                })
-                .UseNLog()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>().UseNLog();
                 });
     }
 #pragma warning restore CS1591

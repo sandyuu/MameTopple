@@ -41,6 +41,8 @@ namespace MameToppleApi.Controllers
                 return NotFound();
             }
             _logger.LogDebug("Test logger = 1(Debug)");
+            _logger.LogInformation("我是資訊:Info");
+            _logger.LogWarning("我是警告:Warn");
             return userVM;
         }
 
