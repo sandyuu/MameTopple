@@ -41,12 +41,6 @@ namespace MameToppleApi.Hubs
             }
         };
 
-        //for connection test
-        public async Task Test (string test)
-        {
-            await Clients.All.SendAsync("test", test);
-        }
-
         public async Task PlayerJoin(string account)
         {
             player.Add(Context.ConnectionId, _gameService.GetPlayerInfo(account));
