@@ -4,6 +4,7 @@ using MameToppleApi.Interfaces;
 using MameToppleApi.Models;
 using MameToppleApi.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 
@@ -13,10 +14,12 @@ namespace MameToppleApi.Tests.Controllers
     public class UserControllerTests
     {
         private Mock<IUserService> _userServiceMock;
+        private Mock<ILogger<UserController>> _iLogger;
         [SetUp]
         public void Setup()
         {
             _userServiceMock = new Mock<IUserService>();
+            _iLogger = new Mock<ILogger<UserController>>();
         }
 
         [Test]
@@ -38,7 +41,7 @@ namespace MameToppleApi.Tests.Controllers
                 Lose = 0
             });
 
-            UserController controller = new UserController(_userServiceMock.Object);
+            UserController controller = new UserController(_userServiceMock.Object, _iLogger.Object);
 
             //////////////////////////////
 
@@ -57,7 +60,7 @@ namespace MameToppleApi.Tests.Controllers
             // Arrange
             var userModel = new User();
 
-            UserController controller = new UserController(_userServiceMock.Object);
+            UserController controller = new UserController(_userServiceMock.Object, _iLogger.Object);
             //使用 AddModelError 新增錯誤，來測試無效的模型狀態
             controller.ModelState.AddModelError("Account", "Required");
 
@@ -74,7 +77,7 @@ namespace MameToppleApi.Tests.Controllers
             // Arrange
             var userModel = new User();
 
-            UserController controller = new UserController(_userServiceMock.Object);
+            UserController controller = new UserController(_userServiceMock.Object, _iLogger.Object);
 
             // Act
             var actual = controller.CreateUser(userModel);
