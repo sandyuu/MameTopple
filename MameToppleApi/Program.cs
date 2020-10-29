@@ -16,7 +16,7 @@ namespace MameToppleApi
     {
         public static void Main(string[] args)
         {
-            NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            NLogBuilder.ConfigureNLog("Nlog.config").GetCurrentClassLogger();
             CreateHostBuilder(args).Build().Run();
         }
 

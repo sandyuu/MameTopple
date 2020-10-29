@@ -10,6 +10,7 @@ using MameToppleApi.Repository;
 using MameToppleApi.Models.ViewModels;
 using MameToppleApi.Interfaces;
 using MameToppleApi.Models;
+using Microsoft.Extensions.Logging;
 
 namespace MameToppleApi.Controllers
 {
@@ -18,9 +19,11 @@ namespace MameToppleApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly ILogger _logger;
+        public UserController(IUserService userService, ILogger<UserController> logger)
         {
             _userService = userService;
+            _logger = logger;
         }
 
         // GET: api/User/admin@gmail.com
@@ -37,6 +40,7 @@ namespace MameToppleApi.Controllers
             {
                 return NotFound();
             }
+            _logger.LogDebug("Test logger = 1(Debug)");
             return userVM;
         }
 
