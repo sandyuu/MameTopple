@@ -94,7 +94,11 @@ namespace MameToppleApi.Controllers
             {
                 return BadRequest(ModelState);
             }
-            _userService.Create(user);
+            bool success = _userService.Create(user);
+            if (!success)
+            {
+                return BadRequest(ModelState);
+            }
             return Ok();
         }
 

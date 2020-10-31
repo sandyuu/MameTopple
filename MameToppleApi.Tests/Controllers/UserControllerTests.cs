@@ -76,6 +76,7 @@ namespace MameToppleApi.Tests.Controllers
         {
             // Arrange
             var userModel = new User();
+            _userServiceMock.Setup(x => x.Create(userModel)).Returns(true);
 
             UserController controller = new UserController(_userServiceMock.Object, _iLogger.Object);
 

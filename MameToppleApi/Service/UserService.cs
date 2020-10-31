@@ -24,12 +24,14 @@ namespace MameToppleApi.Service
         /// 新增
         /// </summary>
         /// <param name="user">user資料表</param>
-        public void Create(User user)
+        public bool Create(User user)
         {
             if (UserExists(user.Account).Result)
-                throw new ArgumentException($"Email:{user.Account} 已經被註冊");
+                return false;
+            // throw new ArgumentException($"Email:{user.Account} 已經被註冊");
             user.Password = Argon2.Hash(user.Password);
             _genericRepository.Create(user);
+            return true;
         }
 
         /// <summary>

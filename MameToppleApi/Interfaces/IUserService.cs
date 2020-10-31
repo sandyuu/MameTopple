@@ -6,7 +6,7 @@ namespace MameToppleApi.Interfaces
 {
     public interface IUserService
     {
-        void Create(User user);
+        bool Create(User user);
         UserViewModel GetById(string account);
         Task<bool> LoginVerify(LoginViewModel loginVM);
     }
