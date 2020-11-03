@@ -13,11 +13,11 @@ namespace MameToppleApi.Service
     public class UserService : IUserService
     {
         private readonly IRepository<User> _genericRepository;
-        private readonly IArgon2Adapter _argon2Adapter;
-        public UserService(IRepository<User> genericRepository, IArgon2Adapter argon2Adapter)
+        private readonly IEncryptionAdapter _encryptionAdapter;
+        public UserService(IRepository<User> genericRepository, IEncryptionAdapter encryptionAdapter)
         {
             _genericRepository = genericRepository;
-            _argon2Adapter = argon2Adapter;
+            _encryptionAdapter = encryptionAdapter;
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace MameToppleApi.Service
             if (UserExists(user.Account).Result)
                 return false;
             // throw new ArgumentException($"Email:{user.Account} 已經被註冊");
-            user.Password = Argon2.Hash(user.Password);
+            user.Password = _encryptionAdapter.HashPassword(user.Password);
             _genericRepository.Create(user);
             return true;
         }
@@ -66,7 +66,7 @@ namespace MameToppleApi.Service
             if (userExist)
             {
                 var passwordHash = AllUsers.Single(x => x.Account == loginVM.Account).Password;
-                if (_argon2Adapter.Verify(passwordHash, loginVM.Password))
+                if (_encryptionAdapter.Verify(passwordHash, loginVM.Password))
                 {
                     return true;
                 }

@@ -22,13 +22,13 @@ namespace MameToppleApi.Tests.Services
         };
 
         private Mock<IRepository<User>> _genericRepositoryMock;
-        private Mock<IArgon2Adapter> _argon2AdapterMock;
+        private Mock<IEncryptionAdapter> _argon2AdapterMock;
 
         [SetUp]
         public void Setup()
         {
             _genericRepositoryMock = new Mock<IRepository<User>>();
-            _argon2AdapterMock = new Mock<IArgon2Adapter>();
+            _argon2AdapterMock = new Mock<IEncryptionAdapter>();
         }
 
         [Test]

@@ -60,7 +60,8 @@ namespace MameToppleApi
             services.AddControllers();
             services.AddSpaStaticFiles(options => options.RootPath = "MameVue/dist");
             services.AddDbContext<ToppleDBContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ToppleDBContext")));
-            services.AddScoped<IArgon2Adapter, Argon2Adapter>();
+            // services.AddScoped<IEncryptionAdapter, Argon2Adapter>();
+            services.AddScoped<IEncryptionAdapter, BcryptHash>();
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
