@@ -135,7 +135,7 @@ namespace MameToppleApi.Hubs
                     await Clients.All.SendAsync("UseCard", _gameService.ChooseDoll(dolls, "DropDown"));
                     break;
                 case "Discard":
-                    await Clients.All.SendAsync("UseCard", _gameService.Discard(dolls));//應該直接下一位
+                    await Clients.All.SendAsync("UseCard", _gameService.Discard(dolls), cardName);//應該直接下一位
                     break;
             }
         }
