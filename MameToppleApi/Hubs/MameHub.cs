@@ -132,17 +132,17 @@ namespace MameToppleApi.Hubs
                 case "DropDown":
                     tempTower = dolls;
                     tempCard = cardName;
-                    await Clients.All.SendAsync("UseCard", _gameService.ChooseDoll(dolls, "DropDown"));
+                    await Clients.Caller.SendAsync("UseCard", _gameService.ChooseDoll(dolls, "DropDown"));
                     break;
                 case "Discard":
-                    await Clients.All.SendAsync("UseCard", _gameService.Discard(dolls), cardName);//應該直接下一位
+                    await Clients.All.SendAsync("CardUsedResult", _gameService.Discard(dolls), cardName);//應該直接下一位
                     break;
             }
         }
 
         public async Task DollChosen(Doll doll)
         {
-            await Clients.All.SendAsync("DollChosen", _gameService.ChosenDollMove(doll, tempTower, tempCard));//下一位
+            await Clients.All.SendAsync("CardUsedResult", _gameService.ChosenDollMove(doll, tempTower, tempCard), tempCard);//下一位
         }
 
         public async Task CheckMyPoint(List<Doll> dolls, List<Doll> missionDolls)
