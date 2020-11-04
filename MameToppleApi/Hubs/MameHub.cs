@@ -12,18 +12,7 @@ namespace MameToppleApi.Hubs
 {
     public class MameHub : Hub
     {
-        private readonly IDollService _dollService;
-        private readonly IGameService _gameService;
-        private readonly ICardService _cardService;
-        public MameHub(IDollService dollService, IGameService gameService, ICardService cardService)
-        {
-            _dollService = dollService;
-            _gameService = gameService;
-            _cardService = cardService;
-        }
         public static Dictionary<string, PlayerViewModel> player = new Dictionary<string, PlayerViewModel>();
-        public static List<Doll> tempTower { get; set; }
-        public static string tempCard { get; set; }
 
         //test data
         public List<PlayerViewModel> players = new List<PlayerViewModel>()
@@ -40,6 +29,20 @@ namespace MameToppleApi.Hubs
                 IsActive = false, IsPlaying = true, Id = 3,
             }
         };
+
+        private readonly IDollService _dollService;
+        private readonly IGameService _gameService;
+        private readonly ICardService _cardService;
+
+        public MameHub(IDollService dollService, IGameService gameService, ICardService cardService)
+        {
+            _dollService = dollService;
+            _gameService = gameService;
+            _cardService = cardService;
+        }
+
+        public static List<Doll> tempTower { get; set; }
+        public static string tempCard { get; set; }
 
         public async Task PlayerJoin(string account)
         {
@@ -85,9 +88,9 @@ namespace MameToppleApi.Hubs
         public async Task GetOtherPlayerInfo()
         {
             var opponents = new List<OpponentViewModel>();
-            foreach(var i in player)
+            foreach (var i in player)
             {
-                if(i.Key == Context.ConnectionId)
+                if (i.Key == Context.ConnectionId)
                 {
                     continue;
                 }
@@ -117,23 +120,27 @@ namespace MameToppleApi.Hubs
                 case "UpThree":
                     tempTower = dolls;
                     tempCard = cardName;
-                    await Clients.Caller.SendAsync("UseCard", _gameService.ChooseDoll(dolls, "UpThree"));
+                    await Clients.Caller.SendAsync("UseCard", _gameService.ChooseDoll(dolls, "UpThree"), cardName);
                     break;
+
                 case "UpTwo":
                     tempTower = dolls;
                     tempCard = cardName;
-                    await Clients.Caller.SendAsync("UseCard", _gameService.ChooseDoll(dolls, "UpTwo"));
+                    await Clients.Caller.SendAsync("UseCard", _gameService.ChooseDoll(dolls, "UpTwo"), cardName);
                     break;
+
                 case "UpOne":
                     tempTower = dolls;
                     tempCard = cardName;
-                    await Clients.Caller.SendAsync("UseCard", _gameService.ChooseDoll(dolls, "UpOne"));
+                    await Clients.Caller.SendAsync("UseCard", _gameService.ChooseDoll(dolls, "UpOne"), cardName);
                     break;
+
                 case "DropDown":
                     tempTower = dolls;
                     tempCard = cardName;
-                    await Clients.Caller.SendAsync("UseCard", _gameService.ChooseDoll(dolls, "DropDown"));
+                    await Clients.Caller.SendAsync("UseCard", _gameService.ChooseDoll(dolls, "DropDown"), cardName);
                     break;
+
                 case "Discard":
                     await Clients.All.SendAsync("CardUsedResult", _gameService.Discard(dolls), cardName);//應該直接下一位
                     break;
@@ -153,9 +160,8 @@ namespace MameToppleApi.Hubs
 
         public async Task GetResult()
         {
-            var result =  _gameService.GetResult(players);
+            var result = _gameService.GetResult(players);
             await Clients.All.SendAsync("GetResult", result);
         }
-
     }
 }
